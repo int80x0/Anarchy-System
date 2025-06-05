@@ -95,10 +95,17 @@ packet-particles:
   rotation-speed: 0.05
   
   # Particle type - Available options:
-  # DUST (colorable with RGB)
-  # DUST_COLOR_TRANSITION (colorable with RGB1-RGB2 transition)
+  # 
+  # COLORABLE PARTICLES (support color configuration):
+  # DUST (RGB color format: "255,0,0")
+  # DUST_COLOR_TRANSITION (RGB1-RGB2 format: "255,0,0-0,0,255")
+  # ENTITY_EFFECT (RGB color format: "255,0,0") 
+  # REDSTONE (RGB color format: "255,0,0" - legacy support)
+  #
+  # NON-COLORABLE PARTICLES (ignore color setting):
   # ELECTRIC_SPARK
-  # FIREWORK
+  # FIREWORK (has its own colorful animation)
+  # FIREWORKS_SPARK (deprecated, use FIREWORK)
   # FLAME
   # HEART
   # ENCHANT
@@ -114,7 +121,6 @@ packet-particles:
   # EXPLOSION
   # EXPLOSION_LARGE
   # EXPLOSION_HUGE
-  # FIREWORKS_SPARK
   # WATER_BUBBLE
   # WATER_SPLASH
   # WATER_WAKE
@@ -133,7 +139,6 @@ packet-particles:
   # TOWN_AURA
   # NOTE_BLOCK
   # PORTAL_AMBIENT
-  # REDSTONE
   # SNOWBALL
   # SNOW_SHOVEL
   # SLIME
@@ -144,10 +149,11 @@ packet-particles:
   # FALLING_DUST
   particle-type: "DUST_COLOR_TRANSITION"
   
-  # Color configuration (only works with DUST and DUST_COLOR_TRANSITION)
-  # For DUST: "R,G,B" (example: "255,0,0" for red)
+  # Color configuration (only works with colorable particles)
+  # For DUST & ENTITY_EFFECT: "R,G,B" (example: "255,0,0" for red)
   # For DUST_COLOR_TRANSITION: "R1,G1,B1-R2,G2,B2" (example: "255,0,0-0,0,255" for red to blue)
-  # For other particles: leave empty ""
+  # For REDSTONE: "R,G,B" (legacy format, example: "255,0,0" for red)
+  # For non-colorable particles: leave empty "" or any value (will be ignored)
   color: "255,0,0-0,0,255"
 
 # Homes System Configuration

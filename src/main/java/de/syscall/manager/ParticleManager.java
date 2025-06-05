@@ -94,6 +94,9 @@ public class ParticleManager {
                 org.bukkit.Color toColor = colors.length > 1 ? parseColor(colors[1]) : fromColor;
                 org.bukkit.Particle.DustTransition dustTransition = new org.bukkit.Particle.DustTransition(fromColor, toColor, 1.0f);
                 player.spawnParticle(particle, x, y, z, 1, 0, 0, 0, 0, dustTransition, true);
+            } else if (particle == org.bukkit.Particle.ENTITY_EFFECT && !particleColor.isEmpty()) {
+                org.bukkit.Color color = parseColor(particleColor);
+                player.spawnParticle(particle, x, y, z, 1, 0, 0, 0, 0, color, true);
             } else {
                 player.spawnParticle(particle, x, y, z, 1, 0, 0, 0, 0, null, true);
             }
