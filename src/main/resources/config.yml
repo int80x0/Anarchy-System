@@ -8,6 +8,81 @@
 modules:
   homes:
     enabled: true
+  packet-particles:
+    enabled: true
+    
+# Packet Particles Configuration
+packet-particles:
+  # Distance in blocks when particles become visible to player
+  detection-radius: 40.0
+  
+  # Radius of the circle animation around home location
+  circle-radius: 0.75
+  
+  # Number of particles in the circle (2 = opposite particles like example)
+  particle-count: 3
+  
+  # Y-axis offset from ground level
+  y-offset: 0.2
+  
+  # Rotation speed (higher = faster rotation)
+  rotation-speed: 0.05
+  
+  # Particle type - Available options:
+  # DUST (colorable with RGB)
+  # DUST_COLOR_TRANSITION (colorable with RGB1-RGB2 transition)
+  # ELECTRIC_SPARK
+  # FIREWORK
+  # FLAME
+  # HEART
+  # ENCHANT
+  # CRIT
+  # MAGIC_CRIT
+  # SPELL
+  # INSTANT_SPELL
+  # MOB_SPELL
+  # WITCH_SPELL
+  # NOTE
+  # PORTAL
+  # ENCHANTMENT_TABLE
+  # EXPLOSION
+  # EXPLOSION_LARGE
+  # EXPLOSION_HUGE
+  # FIREWORKS_SPARK
+  # WATER_BUBBLE
+  # WATER_SPLASH
+  # WATER_WAKE
+  # SUSPENDED
+  # SUSPENDED_DEPTH
+  # CRIT_MAGIC
+  # SMOKE_NORMAL
+  # SMOKE_LARGE
+  # SPELL_MOB
+  # SPELL_MOB_AMBIENT
+  # SPELL_WITCH
+  # DRIP_WATER
+  # DRIP_LAVA
+  # ANGRY_VILLAGER
+  # HAPPY_VILLAGER
+  # TOWN_AURA
+  # NOTE_BLOCK
+  # PORTAL_AMBIENT
+  # REDSTONE
+  # SNOWBALL
+  # SNOW_SHOVEL
+  # SLIME
+  # END_ROD
+  # DRAGON_BREATH
+  # DAMAGE_INDICATOR
+  # SWEEP_ATTACK
+  # FALLING_DUST
+  particle-type: "DUST_COLOR_TRANSITION"
+  
+  # Color configuration (only works with DUST and DUST_COLOR_TRANSITION)
+  # For DUST: "R,G,B" (example: "255,0,0" for red)
+  # For DUST_COLOR_TRANSITION: "R1,G1,B1-R2,G2,B2" (example: "255,0,0-0,0,255" for red to blue)
+  # For other particles: leave empty ""
+  color: "255,0,0-0,0,255"
 
 # Homes System Configuration
 homes:
@@ -43,10 +118,10 @@ homes:
     # Symbols: . = home slot, # = border, < = previous, > = next, X = close
     layout:
       - "#########"
-      - "#.......#"
-      - "#.......#"
-      - "#.......#"
-      - "#.......#"
+      - "#0000000#"
+      - "#0.....0#"
+      - "#0.....0#"
+      - "#0000000#"
       - "<###X###>"
     
     # Interface Elements

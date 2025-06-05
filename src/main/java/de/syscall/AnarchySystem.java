@@ -1,9 +1,11 @@
 package de.syscall;
 
 import de.syscall.command.*;
+import de.syscall.listener.PlayerListener;
 import de.syscall.manager.ConfigManager;
 import de.syscall.manager.HomesManager;
 import de.syscall.manager.LuckPermsManager;
+import de.syscall.manager.ParticleManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AnarchySystem extends JavaPlugin {
@@ -12,6 +14,7 @@ public class AnarchySystem extends JavaPlugin {
     private ConfigManager configManager;
     private HomesManager homesManager;
     private LuckPermsManager luckPermsManager;
+    private ParticleManager particleManager;
 
     @Override
     public void onEnable() {
@@ -20,14 +23,20 @@ public class AnarchySystem extends JavaPlugin {
         this.configManager = new ConfigManager(this);
         this.luckPermsManager = new LuckPermsManager(this);
         this.homesManager = new HomesManager(this);
+        this.particleManager = new ParticleManager(this);
+
 
         registerCommands();
+        registerListeners();
 
         getLogger().info("Anarchy-System enabled!");
     }
 
     @Override
     public void onDisable() {
+        if (particleManager != null) {
+            particleManager.shutdown();
+        }
         if (homesManager != null) {
             homesManager.saveHomes();
         }
@@ -55,11 +64,30 @@ public class AnarchySystem extends JavaPlugin {
         getCommand("anarchy-system").setTabCompleter(anarchyCommand);
     }
 
+    private void registerListeners() {
+        getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+    }
+
     public void reload() {
+        getLogger().info("Starting plugin reload...");
+
+        if (particleManager != null) {
+            particleManager.shutdown();
+        }
+
         configManager.reload();
+
         if (configManager.isModuleEnabled("homes")) {
             homesManager.reload();
         }
+
+        if (particleManager != null && configManager.isModuleEnabled("packet-particles")) {
+            for (org.bukkit.entity.Player player : getServer().getOnlinePlayers()) {
+                particleManager.startParticleTask(player);
+            }
+        }
+
+        getLogger().info("Plugin reload completed!");
     }
 
     public static AnarchySystem getInstance() {
@@ -77,4 +105,10 @@ public class AnarchySystem extends JavaPlugin {
     public LuckPermsManager getLuckPermsManager() {
         return luckPermsManager;
     }
+
+    public ParticleManager getParticleManager() {
+        return particleManager;
+    }
+    
+    
 }

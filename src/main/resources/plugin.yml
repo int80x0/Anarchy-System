@@ -4,7 +4,7 @@ main: de.syscall.AnarchySystem
 api-version: '1.21'
 authors: [80x0]
 description: Modular Anarchy System with Homes
-softdepend: [LuckPerms]
+softdepend: [LuckPerms, ProtocolLib]
 
 permissions:
   anarchy.*:

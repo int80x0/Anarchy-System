@@ -97,6 +97,38 @@ public class ConfigManager {
         return config.getString("homes.ranks." + rank + ".permission", "anarchy.homes." + rank);
     }
 
+    public int getParticleCirclePoints() {
+        return config.getInt("packet-particles.circle-points", 16);
+    }
+
+    public double getParticleDetectionRadius() {
+        return config.getDouble("packet-particles.detection-radius", 30.0);
+    }
+
+    public double getParticleCircleRadius() {
+        return config.getDouble("packet-particles.circle-radius", 0.75);
+    }
+
+    public int getParticleCount() {
+        return config.getInt("packet-particles.particle-count", 2);
+    }
+
+    public double getParticleYOffset() {
+        return config.getDouble("packet-particles.y-offset", 1.0);
+    }
+
+    public double getParticleRotationSpeed() {
+        return config.getDouble("packet-particles.rotation-speed", 0.19634954084936207);
+    }
+
+    public String getParticleType() {
+        return config.getString("packet-particles.particle-type", "ELECTRIC_SPARK");
+    }
+
+    public String getParticleColor() {
+        return config.getString("packet-particles.color", "0,255,255");
+    }
+
     public FileConfiguration getConfig() {
         return config;
     }
