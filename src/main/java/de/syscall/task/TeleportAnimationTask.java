@@ -17,8 +17,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
 
     private int ticksElapsed = 0;
     private int totalTicks;
-    private int soundInterval;
-    private int lastSoundTick = -20;
+    private int lastSoundSecond = -1;
     private final Location originalPlayerLocation;
     private final double movementThreshold;
 
@@ -28,8 +27,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
         this.fromLocation = fromLocation.clone();
         this.toLocation = toLocation.clone();
         this.onComplete = onComplete;
-        this.totalTicks = plugin.getConfigManager().getTeleportAnimationDuration() * 10;
-        this.soundInterval = 20;
+        this.totalTicks = plugin.getConfigManager().getTeleportAnimationDuration() * 20;
         this.originalPlayerLocation = player.getLocation().clone();
         this.movementThreshold = plugin.getConfigManager().getTeleportAnimationMovementThreshold();
     }
@@ -53,19 +51,49 @@ public class TeleportAnimationTask extends BukkitRunnable {
         }
 
         double progress = (double) ticksElapsed / totalTicks;
-        double spiralHeight = plugin.getConfigManager().getTeleportAnimationHeight();
 
-        spawnSpiralParticles(fromLocation, progress, true); 
+        spawnSpiralParticles(fromLocation, progress, true);
         spawnSpiralParticles(toLocation, progress, false);
         spawnCircleParticles(fromLocation);
         spawnCircleParticles(toLocation);
 
-        if (ticksElapsed - lastSoundTick >= soundInterval) {
-            playSound();
-            lastSoundTick = ticksElapsed;
-        }
+        handleSoundTiming();
 
         ticksElapsed += 2;
+    }
+
+    private void handleSoundTiming() {
+        int currentSecond = ticksElapsed / 20;
+        int totalSeconds = plugin.getConfigManager().getTeleportAnimationDuration();
+
+        if (currentSecond != lastSoundSecond && currentSecond < totalSeconds - 1) {
+            playLoopSound();
+            lastSoundSecond = currentSecond;
+        }
+    }
+
+    private void playLoopSound() {
+        String soundName = plugin.getConfigManager().getTeleportAnimationLoopSound();
+        try {
+            Sound sound = Sound.valueOf(soundName.toUpperCase());
+            float volume = plugin.getConfigManager().getTeleportAnimationSoundVolume();
+            float pitch = plugin.getConfigManager().getTeleportAnimationSoundPitch();
+            player.playSound(player.getLocation(), sound, volume, pitch);
+        } catch (Exception e) {
+            player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 0.5f, 1.0f);
+        }
+    }
+
+    private void playFinalSound() {
+        String soundName = plugin.getConfigManager().getTeleportAnimationFinalSound();
+        try {
+            Sound sound = Sound.valueOf(soundName.toUpperCase());
+            float volume = plugin.getConfigManager().getTeleportAnimationSoundVolume();
+            float pitch = plugin.getConfigManager().getTeleportAnimationSoundPitch();
+            player.playSound(player.getLocation(), sound, volume, pitch);
+        } catch (Exception e) {
+            player.playSound(player.getLocation(), Sound.ITEM_CHORUS_FRUIT_TELEPORT, 0.5f, 1.0f);
+        }
     }
 
     private void spawnSpiralParticles(Location location, double progress, boolean upward) {
@@ -75,7 +103,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
         double spiralTurns = plugin.getConfigManager().getTeleportAnimationSpiralTurns();
 
         for (int i = 0; i < spiralParticleCount; i++) {
-            double particleProgress = progress + (i * (1.0 / spiralParticleCount)); // Gleichmäßiger Versatz
+            double particleProgress = progress + (i * (1.0 / spiralParticleCount));
 
             if (particleProgress > 1.0) particleProgress -= 1.0;
             if (particleProgress < 0.0) particleProgress += 1.0;
@@ -213,28 +241,6 @@ public class TeleportAnimationTask extends BukkitRunnable {
         }
     }
 
-    private void playSound() {
-        int currentSecond = (ticksElapsed / 20) + 1;
-        int totalSeconds = plugin.getConfigManager().getTeleportAnimationDuration();
-
-        String soundName;
-        if (currentSecond == totalSeconds) {
-            soundName = plugin.getConfigManager().getTeleportAnimationFinalSound();
-        } else { 
-            soundName = plugin.getConfigManager().getTeleportAnimationLoopSound();
-        }
-
-        try {
-            Sound sound = Sound.valueOf(soundName.toUpperCase());
-            float volume = plugin.getConfigManager().getTeleportAnimationSoundVolume();
-            float pitch = plugin.getConfigManager().getTeleportAnimationSoundPitch();
-
-            player.playSound(player.getLocation(), sound, volume, pitch);
-        } catch (Exception e) {
-            player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 0.5f, 1.0f);
-        }
-    }
-
     private void finishTeleport() {
         cancelAnimation();
 
@@ -244,6 +250,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
                 if (onComplete != null) {
                     onComplete.run();
                 }
+                playFinalSound();
             }
         }.runTask(plugin);
     }
