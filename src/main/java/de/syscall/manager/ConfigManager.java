@@ -145,6 +145,74 @@ public class ConfigManager {
         return config.getInt("teleport.back-cooldown", 10);
     }
 
+    public boolean isTeleportAnimationEnabled() {
+        return config.getBoolean("teleport-animation.enabled", true);
+    }
+
+    public int getTeleportAnimationDuration() {
+        return config.getInt("teleport-animation.duration", 6);
+    }
+
+    public double getTeleportAnimationHeight() {
+        return config.getDouble("teleport-animation.spiral-height", 2.0);
+    }
+
+    public double getTeleportAnimationRadius() {
+        return config.getDouble("teleport-animation.radius", 1.0);
+    }
+
+    public int getTeleportAnimationParticleCount() {
+        return config.getInt("teleport-animation.particle-count", 3);
+    }
+
+    public int getTeleportAnimationSpiralParticleCount() {
+        return config.getInt("teleport-animation.spiral-particle-count", 6);
+    }
+
+    public String getTeleportAnimationParticleType() {
+        return config.getString("teleport-animation.particle-type", "ELECTRIC_SPARK");
+    }
+
+    public String getTeleportAnimationSpiralParticleType() {
+        return config.getString("teleport-animation.spiral-particle-type", "DUST_COLOR_TRANSITION");
+    }
+
+    public String getTeleportAnimationParticleColor() {
+        return config.getString("teleport-animation.particle-color", "0,255,255");
+    }
+
+    public String getTeleportAnimationSpiralParticleColor() {
+        return config.getString("teleport-animation.spiral-particle-color", "255,215,0-255,69,0");
+    }
+
+    public double getTeleportAnimationViewDistance() {
+        return config.getDouble("teleport-animation.view-distance", 40.0);
+    }
+
+    public String getTeleportAnimationLoopSound() {
+        return config.getString("teleport-animation.sounds.loop", "ENTITY_BAT_TAKEOFF");
+    }
+
+    public String getTeleportAnimationFinalSound() {
+        return config.getString("teleport-animation.sounds.final", "ITEM_CHORUS_FRUIT_TELEPORT");
+    }
+
+    public float getTeleportAnimationSoundVolume() {
+        return (float) config.getDouble("teleport-animation.sounds.volume", 0.5);
+    }
+
+    public float getTeleportAnimationSoundPitch() {
+        return (float) config.getDouble("teleport-animation.sounds.pitch", 1.0);
+    }
+
+    public double getTeleportAnimationMovementThreshold() {
+        return config.getDouble("teleport-animation.movement-threshold", 0.5);
+    }
+
+    public double getTeleportAnimationSpiralTurns() {
+        return config.getDouble("teleport-animation.spiral-turns", 3.0);
+    }
+
     public FileConfiguration getConfig() {
         return config;
     }

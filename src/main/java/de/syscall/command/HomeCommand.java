@@ -44,9 +44,14 @@ public class HomeCommand implements CommandExecutor {
             return true;
         }
 
-        player.teleport(home);
-        player.sendMessage(plugin.getConfigManager().formatMessage("home-teleported", "home", String.valueOf(homeNumber)).replace("&", "§"));
+        Location fromLocation = player.getLocation();
+        String successMessage = plugin.getConfigManager().formatMessage("home-teleported", "home", String.valueOf(homeNumber)).replace("&", "§");
 
+        plugin.getTeleportAnimationManager().startTeleportAnimation(player, fromLocation, home, () -> {
+            player.teleport(home);
+            player.sendMessage(successMessage);
+        });
+        
         return true;
     }
 }

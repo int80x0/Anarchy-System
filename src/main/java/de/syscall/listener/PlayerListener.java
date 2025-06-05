@@ -30,5 +30,8 @@ public class PlayerListener implements Listener {
         if (plugin.getTeleportManager() != null) {
             plugin.getTeleportManager().cleanupPlayer(event.getPlayer());
         }
+        if (plugin.getTeleportAnimationManager() != null) {
+            plugin.getTeleportAnimationManager().cleanupPlayer(event.getPlayer());
+        }
     }
 }

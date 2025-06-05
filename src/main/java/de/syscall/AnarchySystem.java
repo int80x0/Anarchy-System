@@ -3,11 +3,7 @@ package de.syscall;
 import de.syscall.command.*;
 import de.syscall.listener.PlayerListener;
 import de.syscall.listener.TeleportListener;
-import de.syscall.manager.ConfigManager;
-import de.syscall.manager.HomesManager;
-import de.syscall.manager.LuckPermsManager;
-import de.syscall.manager.ParticleManager;
-import de.syscall.manager.TeleportManager;
+import de.syscall.manager.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AnarchySystem extends JavaPlugin {
@@ -18,6 +14,7 @@ public class AnarchySystem extends JavaPlugin {
     private LuckPermsManager luckPermsManager;
     private ParticleManager particleManager;
     private TeleportManager teleportManager;
+    private TeleportAnimationManager teleportAnimationManager;
 
     @Override
     public void onEnable() {
@@ -28,6 +25,7 @@ public class AnarchySystem extends JavaPlugin {
         this.homesManager = new HomesManager(this);
         this.particleManager = new ParticleManager(this);
         this.teleportManager = new TeleportManager(this);
+        this.teleportAnimationManager = new TeleportAnimationManager(this);
 
         registerCommands();
         registerListeners();
@@ -45,6 +43,9 @@ public class AnarchySystem extends JavaPlugin {
         }
         if (homesManager != null) {
             homesManager.saveHomes();
+        }
+        if (teleportAnimationManager != null) {
+            teleportAnimationManager.shutdown();
         }
         getLogger().info("Anarchy-System disabled!");
     }
@@ -108,6 +109,10 @@ public class AnarchySystem extends JavaPlugin {
             }
         }
 
+        if (teleportAnimationManager != null) {
+            teleportAnimationManager.shutdown();
+        }
+
         getLogger().info("Plugin reload completed!");
     }
 
@@ -133,5 +138,9 @@ public class AnarchySystem extends JavaPlugin {
 
     public TeleportManager getTeleportManager() {
         return teleportManager;
+    }
+
+    public TeleportAnimationManager getTeleportAnimationManager() {
+        return teleportAnimationManager;
     }
 }

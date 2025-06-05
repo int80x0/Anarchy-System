@@ -130,10 +130,20 @@ public class TeleportManager {
 
         if (request.getType() == TeleportRequest.TeleportType.TPA) {
             saveLastLocation(requester);
-            requester.teleport(target.getLocation());
+            Location fromLocation = requester.getLocation();
+            Location toLocation = target.getLocation();
+
+            plugin.getTeleportAnimationManager().startTeleportAnimation(requester, fromLocation, toLocation, () -> {
+                requester.teleport(toLocation);
+            });
         } else {
             saveLastLocation(target);
-            target.teleport(requester.getLocation());
+            Location fromLocation = target.getLocation();
+            Location toLocation = requester.getLocation();
+
+            plugin.getTeleportAnimationManager().startTeleportAnimation(target, fromLocation, toLocation, () -> {
+                target.teleport(toLocation);
+            });
         }
 
         requester.sendMessage(plugin.getConfigManager().getTeleportMessage("tpa-accepted").replace("&", "§").replace("%player%", target.getName()));

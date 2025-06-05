@@ -12,6 +12,8 @@ modules:
     enabled: true
   teleport:
     enabled: true
+  teleport-animation:
+    enabled: true
 
 # Teleport System Configuration
 teleport:
@@ -23,6 +25,57 @@ teleport:
   
   # Cooldown for /back command in seconds
   back-cooldown: 10
+
+# Teleport Animation Configuration
+teleport-animation:
+  # Enable teleport animations
+  enabled: true
+  
+  # Duration of animation in seconds
+  duration: 6
+  
+  # Height of spiral animation (blocks)
+  spiral-height: 2.0
+  
+  # Radius of spiral and circle effects
+  radius: 1.0
+  
+  # Number of particles in circle animation
+  particle-count: 3
+  
+  # Number of particles in spiral animation
+  spiral-particle-count: 6
+  
+  # Circle particle configuration
+  particle-type: "ELECTRIC_SPARK"
+  particle-color: "0,255,255"
+  
+  # Spiral particle configuration
+  spiral-particle-type: "DUST_COLOR_TRANSITION"
+  spiral-particle-color: "255,215,0-255,69,0"
+  
+  # Distance players can see the animation
+  view-distance: 40.0
+  
+  # Movement threshold to cancel teleport (blocks)
+  movement-threshold: 0.5
+  
+  # Number of turns the spiral makes during animation
+  spiral-turns: 3.0
+  
+  # Sound configuration
+  sounds:
+    # Sound played during spiral animation
+    loop: "ENTITY_BAT_TAKEOFF"
+    
+    # Sound played at final second
+    final: "ITEM_CHORUS_FRUIT_TELEPORT"
+    
+    # Sound volume (0.0 - 1.0)
+    volume: 0.5
+    
+    # Sound pitch (0.5 - 2.0)
+    pitch: 1.0
 
 # Packet Particles Configuration
 packet-particles:
@@ -221,6 +274,7 @@ messages:
     tpa-denied-target: "&c&lDENIED &8» &7You denied &f%player%&7's teleport request"
     tpa-timeout: "&c&lTIMEOUT &8» &7Teleport request to &f%player% &7has expired"
     tpa-timeout-target: "&c&lTIMEOUT &8» &7Teleport request from &f%player% &7has expired"
+    teleport-cancelled-movement: "&c&lCANCELLED &8» &7Teleport cancelled due to movement"
     
     # TPA Errors
     tpa-self: "&c&lERROR &8» &7You cannot send a teleport request to yourself"

@@ -303,8 +303,13 @@ public class HomesGui {
                 Location location = homeData.toLocation();
                 if (location != null) {
                     player.closeInventory();
-                    player.teleport(location);
-                    player.sendMessage(colorize(plugin.getConfigManager().formatMessage("home-teleported", "home", String.valueOf(homeNumber))));
+                    Location fromLocation = player.getLocation();
+                    String successMessage = colorize(plugin.getConfigManager().formatMessage("home-teleported", "home", String.valueOf(homeNumber)));
+
+                    plugin.getTeleportAnimationManager().startTeleportAnimation(player, fromLocation, location, () -> {
+                        player.teleport(location);
+                        player.sendMessage(successMessage);
+                    });
                 } else {
                     player.sendMessage(colorize(plugin.getConfigManager().getGuiMessage("world-not-found")));
                 }
