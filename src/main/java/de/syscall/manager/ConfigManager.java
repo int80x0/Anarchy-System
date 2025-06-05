@@ -129,6 +129,22 @@ public class ConfigManager {
         return config.getString("packet-particles.color", "0,255,255");
     }
 
+    public String getTeleportMessage(String key) {
+        return config.getString("messages.teleport." + key, "Teleport message not found: " + key);
+    }
+
+    public int getTpaTimeout() {
+        return config.getInt("teleport.tpa-timeout", 60);
+    }
+
+    public int getTpaCooldown() {
+        return config.getInt("teleport.tpa-cooldown", 30);
+    }
+
+    public int getBackCooldown() {
+        return config.getInt("teleport.back-cooldown", 10);
+    }
+
     public FileConfiguration getConfig() {
         return config;
     }

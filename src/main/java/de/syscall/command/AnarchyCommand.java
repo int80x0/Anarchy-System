@@ -21,8 +21,8 @@ public class AnarchyCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(ChatUtil.colorize("&6Anarchy-System &7v1.0"));
-            sender.sendMessage(ChatUtil.colorize("&7Use &6/" + label + " reload &7to reload the configuration"));
+            sender.sendMessage(ChatUtil.colorize("§6Anarchy-System §7v1.0 by §6§l80x0"));
+            sender.sendMessage(ChatUtil.colorize("§7Use §6/" + label + " reload §7to reload the configuration"));
             return true;
         }
 

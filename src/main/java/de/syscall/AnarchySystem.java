@@ -2,10 +2,12 @@ package de.syscall;
 
 import de.syscall.command.*;
 import de.syscall.listener.PlayerListener;
+import de.syscall.listener.TeleportListener;
 import de.syscall.manager.ConfigManager;
 import de.syscall.manager.HomesManager;
 import de.syscall.manager.LuckPermsManager;
 import de.syscall.manager.ParticleManager;
+import de.syscall.manager.TeleportManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AnarchySystem extends JavaPlugin {
@@ -15,6 +17,7 @@ public class AnarchySystem extends JavaPlugin {
     private HomesManager homesManager;
     private LuckPermsManager luckPermsManager;
     private ParticleManager particleManager;
+    private TeleportManager teleportManager;
 
     @Override
     public void onEnable() {
@@ -24,7 +27,7 @@ public class AnarchySystem extends JavaPlugin {
         this.luckPermsManager = new LuckPermsManager(this);
         this.homesManager = new HomesManager(this);
         this.particleManager = new ParticleManager(this);
-
+        this.teleportManager = new TeleportManager(this);
 
         registerCommands();
         registerListeners();
@@ -36,6 +39,9 @@ public class AnarchySystem extends JavaPlugin {
     public void onDisable() {
         if (particleManager != null) {
             particleManager.shutdown();
+        }
+        if (teleportManager != null) {
+            teleportManager.shutdown();
         }
         if (homesManager != null) {
             homesManager.saveHomes();
@@ -59,6 +65,15 @@ public class AnarchySystem extends JavaPlugin {
             getCommand("delhome").setTabCompleter(tabCompleter);
         }
 
+        if (configManager.isModuleEnabled("teleport")) {
+            getCommand("tpa").setExecutor(new TpaCommand(this));
+            getCommand("tpahere").setExecutor(new TpaHereCommand(this));
+            getCommand("tpaccept").setExecutor(new TpAcceptCommand(this));
+            getCommand("tpdeny").setExecutor(new TpDenyCommand(this));
+            getCommand("tpatoggle").setExecutor(new TpaToggleCommand(this));
+            getCommand("back").setExecutor(new BackCommand(this));
+        }
+
         AnarchyCommand anarchyCommand = new AnarchyCommand(this);
         getCommand("anarchy-system").setExecutor(anarchyCommand);
         getCommand("anarchy-system").setTabCompleter(anarchyCommand);
@@ -66,6 +81,9 @@ public class AnarchySystem extends JavaPlugin {
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        if (configManager.isModuleEnabled("teleport")) {
+            getServer().getPluginManager().registerEvents(new TeleportListener(this), this);
+        }
     }
 
     public void reload() {
@@ -73,6 +91,9 @@ public class AnarchySystem extends JavaPlugin {
 
         if (particleManager != null) {
             particleManager.shutdown();
+        }
+        if (teleportManager != null) {
+            teleportManager.shutdown();
         }
 
         configManager.reload();
@@ -109,6 +130,8 @@ public class AnarchySystem extends JavaPlugin {
     public ParticleManager getParticleManager() {
         return particleManager;
     }
-    
-    
+
+    public TeleportManager getTeleportManager() {
+        return teleportManager;
+    }
 }

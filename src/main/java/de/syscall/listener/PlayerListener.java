@@ -27,5 +27,8 @@ public class PlayerListener implements Listener {
         if (plugin.getParticleManager() != null) {
             plugin.getParticleManager().cleanupPlayer(event.getPlayer());
         }
+        if (plugin.getTeleportManager() != null) {
+            plugin.getTeleportManager().cleanupPlayer(event.getPlayer());
+        }
     }
 }

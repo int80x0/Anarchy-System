@@ -3,7 +3,7 @@ version: '1.0'
 main: de.syscall.AnarchySystem
 api-version: '1.21'
 authors: [80x0]
-description: Modular Anarchy System with Homes
+description: Modular Anarchy System with Homes and Teleport
 softdepend: [LuckPerms, ProtocolLib]
 
 permissions:
@@ -34,6 +34,27 @@ permissions:
   anarchy.homes.legendary:
     description: Legendary rank homes (10 homes)
     default: false
+  anarchy.teleport.tpa:
+    description: Send TPA requests
+    default: true
+  anarchy.teleport.tpahere:
+    description: Send TPAHERE requests
+    default: true
+  anarchy.teleport.accept:
+    description: Accept teleport requests
+    default: true
+  anarchy.teleport.deny:
+    description: Deny teleport requests
+    default: true
+  anarchy.teleport.toggle:
+    description: Toggle TPA requests
+    default: true
+  anarchy.teleport.back:
+    description: Use back command
+    default: true
+  anarchy.teleport.bypass-cooldown:
+    description: Bypass teleport cooldowns
+    default: op
 
 commands:
   sethome:
@@ -48,6 +69,26 @@ commands:
   delhome:
     description: Delete a home
     usage: /delhome [number]
+  tpa:
+    description: Send teleport request
+    usage: /tpa <player>
+  tpahere:
+    description: Send teleport here request
+    usage: /tpahere <player>
+  tpaccept:
+    description: Accept teleport request
+    usage: /tpaccept
+    aliases: [tpayes, tpyes]
+  tpdeny:
+    description: Deny teleport request
+    usage: /tpdeny
+    aliases: [tpano, tpno]
+  tpatoggle:
+    description: Toggle teleport requests
+    usage: /tpatoggle
+  back:
+    description: Teleport to previous location
+    usage: /back
   anarchy-system:
     description: Main command
     usage: /anarchy-system <reload>
