@@ -62,12 +62,25 @@ public class ConfigValidator {
         boolean valid = true;
 
         for (int i = 1; i <= 10; i++) {
-            String material = config.getString("homes.gui.items.home-" + i + ".material");
+            String material = config.getString("homes.gui.homes." + i + ".material");
             if (material != null) {
                 try {
                     Material.valueOf(material);
                 } catch (IllegalArgumentException e) {
-                    plugin.getLogger().warning("Invalid material for home-" + i + ": " + material);
+                    plugin.getLogger().warning("Invalid material for home " + i + ": " + material);
+                    valid = false;
+                }
+            }
+        }
+
+        String[] symbols = {"#", "<", ">", "X"};
+        for (String symbol : symbols) {
+            String material = config.getString("homes.gui.items." + symbol + ".material");
+            if (material != null) {
+                try {
+                    Material.valueOf(material);
+                } catch (IllegalArgumentException e) {
+                    plugin.getLogger().warning("Invalid material for symbol " + symbol + ": " + material);
                     valid = false;
                 }
             }

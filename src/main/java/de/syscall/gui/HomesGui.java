@@ -24,6 +24,8 @@ public class HomesGui {
     private final Player player;
     private int currentPage = 0;
     private final List<Integer> homeSlots = new ArrayList<>();
+    private Gui gui;
+    private Window window;
 
     public HomesGui(AnarchySystem plugin, Player player) {
         this.plugin = plugin;
@@ -35,22 +37,26 @@ public class HomesGui {
         homeSlots.clear();
         findHomeSlots(layout);
 
-        Gui gui = Gui.normal()
+        this.gui = Gui.normal()
                 .setStructure(layout.toArray(new String[0]))
                 .addIngredient('#', new BorderItem())
                 .addIngredient('X', new CloseItem())
                 .build();
 
-        fillHomeItems(gui);
-        applyNavigationItems(gui, layout);
+        updateContent();
 
-        Window window = Window.single()
+        this.window = Window.single()
                 .setViewer(player)
                 .setTitle(colorize(plugin.getConfigManager().getGuiTitle()))
                 .setGui(gui)
                 .build();
 
         window.open();
+    }
+
+    private void updateContent() {
+        fillHomeItems();
+        updateNavigationItems();
     }
 
     private void findHomeSlots(List<String> layout) {
@@ -64,25 +70,28 @@ public class HomesGui {
         }
     }
 
-    private void fillHomeItems(Gui gui) {
+    private void fillHomeItems() {
         Map<Integer, HomeData> playerHomes = plugin.getHomesManager().getPlayerHomes(player);
         int playerMaxHomes = plugin.getHomesManager().getPlayerMaxHomes(player);
         int maxHomes = plugin.getConfigManager().getMaxHomes();
 
         int itemsPerPage = homeSlots.size();
-        int startIndex = currentPage * itemsPerPage;
+        int startHome = currentPage * itemsPerPage + 1;
 
-        for (int i = 0; i < itemsPerPage && i < homeSlots.size(); i++) {
-            int homeNumber = startIndex + i + 1;
+        for (int i = 0; i < homeSlots.size(); i++) {
+            int homeNumber = startHome + i;
             if (homeNumber <= maxHomes) {
                 HomeData homeData = playerHomes.get(homeNumber);
                 boolean hasAccess = homeNumber <= playerMaxHomes;
                 gui.setItem(homeSlots.get(i), new HomeItem(homeNumber, homeData, hasAccess));
+            } else {
+                gui.setItem(homeSlots.get(i), new BorderItem());
             }
         }
     }
 
-    private void applyNavigationItems(Gui gui, List<String> layout) {
+    private void updateNavigationItems() {
+        List<String> layout = plugin.getConfigManager().getGuiLayout();
         int leftArrowSlot = findCharSlot('<', layout);
         int rightArrowSlot = findCharSlot('>', layout);
 
@@ -109,8 +118,8 @@ public class HomesGui {
     private boolean canGoNext() {
         int itemsPerPage = homeSlots.size();
         int maxHomes = plugin.getConfigManager().getMaxHomes();
-        int totalPages = (int) Math.ceil((double) maxHomes / itemsPerPage);
-        return currentPage < totalPages - 1;
+        int lastHomeOnCurrentPage = (currentPage + 1) * itemsPerPage;
+        return lastHomeOnCurrentPage < maxHomes;
     }
 
     private boolean canGoPrevious() {
@@ -120,20 +129,15 @@ public class HomesGui {
     private void nextPage() {
         if (canGoNext()) {
             currentPage++;
-            refreshGui();
+            updateContent();
         }
     }
 
     private void previousPage() {
         if (canGoPrevious()) {
             currentPage--;
-            refreshGui();
+            updateContent();
         }
-    }
-
-    private void refreshGui() {
-        player.closeInventory();
-        open();
     }
 
     private String colorize(String text) {
@@ -174,7 +178,7 @@ public class HomesGui {
 
         @Override
         public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
-            if (canGoPrevious()) previousPage();
+            previousPage();
         }
     }
 
@@ -194,7 +198,7 @@ public class HomesGui {
 
         @Override
         public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
-            if (canGoNext()) nextPage();
+            nextPage();
         }
     }
 
@@ -307,7 +311,7 @@ public class HomesGui {
             } else if (clickType.isRightClick()) {
                 if (plugin.getHomesManager().deleteHome(player, homeNumber)) {
                     player.sendMessage(colorize(plugin.getConfigManager().formatMessage("home-deleted", "home", String.valueOf(homeNumber))));
-                    refreshGui();
+                    updateContent();
                 }
             }
         }

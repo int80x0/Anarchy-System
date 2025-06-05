@@ -1,15 +1,22 @@
-﻿# Anarchy-System Configuration
-# Modern homes system with visual layout configuration
+﻿# ==========================================
+#           ANARCHY SYSTEM CONFIG
+# ==========================================
+# Modern homes system with GUI management
+# UTF-8 Support enabled
 
+# Module Configuration
 modules:
   homes:
     enabled: true
 
+# Homes System Configuration
 homes:
+  # Basic Settings
   default-homes: 1
   max-homes: 10
   luckperms-integration: true
   
+  # Rank System
   ranks:
     epic:
       homes: 2
@@ -28,11 +35,12 @@ homes:
       luckperms-group: "legendary"
       permission: "anarchy.homes.legendary"
   
+  # GUI Configuration
   gui:
-    title: "&6&lHomes Manager"
+    title: "&8[&6Homes&8] &7Manager"
     
-    # Visual GUI Layout - each character = 1 slot
-    # . = home slots, # = border, < = previous, > = next, X = close
+    # Layout Design (9x6 inventory)
+    # Symbols: . = home slot, # = border, < = previous, > = next, X = close
     layout:
       - "#########"
       - "#.......#"
@@ -41,102 +49,108 @@ homes:
       - "#.......#"
       - "<###X###>"
     
-    # Special items configuration
+    # Interface Elements
     items:
       "#":
-        material: "GRAY_STAINED_GLASS_PANE"
+        material: "BLACK_STAINED_GLASS_PANE"
         name: " "
       "<":
         material: "ARROW"
-        name: "&7◀ Previous"
+        name: "&7Previous Page"
       ">":
         material: "ARROW"
-        name: "&7Next ▶"
+        name: "&7Next Page"
       "X":
         material: "BARRIER"
-        name: "&cClose"
+        name: "&cClose Menu"
     
-    # Home configurations
+    # Home Item Configurations
     homes:
       1:
         material: "WHITE_BED"
-        name: "&f&lHome 1"
+        name: "&fHome 1"
         rank: "default"
       2:
-        material: "LIGHT_GRAY_BED"
-        name: "&7&lHome 2 &8[Epic]"
+        material: "ORANGE_BED"
+        name: "&6Home 2 &8- Epic"
         rank: "epic"
       3:
         material: "ORANGE_BED"
-        name: "&6&lHome 3 &8[Ultra]"
+        name: "&6Home 3 &8- Ultra"
         rank: "ultra"
       4:
         material: "ORANGE_BED"
-        name: "&6&lHome 4 &8[Ultra]"
+        name: "&6Home 4 &8- Ultra"
         rank: "ultra"
       5:
-        material: "BLUE_BED"
-        name: "&9&lHome 5 &8[Hero]"
+        material: "LIGHT_BLUE_BED"
+        name: "&bHome 5 &8- Hero"
         rank: "hero"
       6:
-        material: "BLUE_BED"
-        name: "&9&lHome 6 &8[Hero]"
+        material: "LIGHT_BLUE_BED"
+        name: "&bHome 6 &8- Hero"
         rank: "hero"
       7:
         material: "PURPLE_BED"
-        name: "&5&lHome 7 &8[Legendary]"
+        name: "&dHome 7 &8- Legendary"
         rank: "legendary"
       8:
         material: "PURPLE_BED"
-        name: "&5&lHome 8 &8[Legendary]"
+        name: "&dHome 8 &8- Legendary"
         rank: "legendary"
       9:
         material: "PURPLE_BED"
-        name: "&5&lHome 9 &8[Legendary]"
+        name: "&dHome 9 &8- Legendary"
         rank: "legendary"
       10:
         material: "PURPLE_BED"
-        name: "&5&lHome 10 &8[Legendary]"
+        name: "&dHome 10 &8- Legendary"
         rank: "legendary"
 
+# Message Configuration
 messages:
+  # Command Messages
   commands:
-    home-set: "&a&l✓ &7Home &6%home% &7set successfully!"
-    home-teleported: "&a&l➤ &7Teleported to home &6%home%"
-    home-deleted: "&c&l✗ &7Home &6%home% &7deleted!"
-    home-not-found: "&c&l! &7Home &6%home% &7not found"
-    max-homes-reached: "&c&l! &7Maximum homes reached"
-    no-permission: "&c&l! &7No permission"
-    invalid-number: "&c&l! &7Invalid home number"
-    config-reloaded: "&a&l✓ &7Configuration reloaded"
+    home-set: "&a&lSUCCESS &8» &7Home &f%home% &7has been set"
+    home-teleported: "&a&lTELEPORT &8» &7Teleported to home &f%home%"
+    home-deleted: "&c&lDELETED &8» &7Home &f%home% &7has been removed"
+    home-not-found: "&c&lERROR &8» &7Home &f%home% &7does not exist"
+    max-homes-reached: "&c&lLIMIT &8» &7You have reached your home limit"
+    no-permission: "&c&lERROR &8» &7Insufficient permissions"
+    invalid-number: "&c&lERROR &8» &7Invalid home number provided"
+    config-reloaded: "&a&lRELOAD &8» &7Configuration has been reloaded"
   
+  # GUI Messages
   gui:
+    # Home Item Descriptions
     home-set-lore:
       - "&7World: &f%world%"
-      - "&7Location: &f%x%, %y%, %z%"
+      - "&7Position: &f%x% &8/ &f%y% &8/ &f%z%"
       - ""
-      - "&a▶ Left-click to teleport"
-      - "&c▶ Right-click to delete"
+      - "&aLeft Click &8» &7Teleport"
+      - "&cRight Click &8» &7Delete Home"
     
     home-empty-lore:
-      - "&7This home is not set"
+      - "&7This home slot is empty"
       - ""
-      - "&e▶ Use &6/sethome %number%"
+      - "&eUse command: &6/sethome %number%"
     
     home-locked-lore:
-      - "&c&l🔒 LOCKED"
-      - "&7Required rank: &6%rank%"
+      - "&c&lLOCKED SLOT"
+      - "&7Required Rank: &f%rank%"
       - ""
-      - "&7Upgrade to &6%rank% &7rank"
-      - "&7to unlock this home"
+      - "&7Upgrade your rank to unlock"
+      - "&7this home slot"
     
+    # GUI Interaction Messages
     messages:
-      no-access: "&c&l! &7You cannot access this home"
-      world-not-found: "&c&l! &7Home world not found"
+      no-access: "&c&lERROR &8» &7You cannot access this home slot"
+      world-not-found: "&c&lERROR &8» &7Home world no longer exists"
   
+  # Rank Display Names
   ranks:
-    default: "&f&lDefault"
-    epic: "&6&lEpic"
-    ultra: "&6&lUltra"
-    hero: "&9&lHero"
-    legendary: "&5&lLegendary"
+    default: "&7Default"
+    epic: "&6Epic"
+    ultra: "&6Ultra"
+    hero: "&bHero"
+    legendary: "&dLegendary"

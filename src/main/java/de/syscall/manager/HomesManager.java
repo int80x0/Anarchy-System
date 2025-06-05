@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import de.syscall.AnarchySystem;
 import de.syscall.data.HomeData;
+import de.syscall.util.HomeDataAdapter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,7 @@ public class HomesManager {
         this.homesFile = new File(plugin.getDataFolder(), "homes.json");
         this.gson = new GsonBuilder()
                 .setPrettyPrinting()
-                .registerTypeAdapter(HomeData.class, new de.syscall.util.HomeDataAdapter())
+                .registerTypeAdapter(HomeData.class, new HomeDataAdapter())
                 .create();
         this.playerHomes = new HashMap<>();
         loadHomes();
@@ -42,8 +43,7 @@ public class HomesManager {
         }
 
         try (FileReader reader = new FileReader(homesFile)) {
-            Type type = new TypeToken<Map<UUID, Map<Integer, HomeData>>>() {
-            }.getType();
+            Type type = new TypeToken<Map<UUID, Map<Integer, HomeData>>>() {}.getType();
             Map<UUID, Map<Integer, HomeData>> loaded = gson.fromJson(reader, type);
             playerHomes = loaded != null ? loaded : new HashMap<>();
         } catch (IOException e) {
@@ -67,7 +67,7 @@ public class HomesManager {
     }
 
     public boolean setHome(Player player, int homeNumber, Location location) {
-        if (canSetHome(player, homeNumber)) {
+        if (!canSetHome(player, homeNumber)) {
             return false;
         }
 
@@ -123,15 +123,15 @@ public class HomesManager {
 
     public boolean canSetHome(Player player, int homeNumber) {
         if (homeNumber < 1 || homeNumber > plugin.getConfigManager().getMaxHomes()) {
-            return true;
+            return false;
         }
 
         int maxHomes = getPlayerMaxHomes(player);
         if (homeNumber > maxHomes) {
-            return true;
+            return false;
         }
 
-        return homeNumber > 1 && !player.hasPermission("anarchy.homes.multiple");
+        return homeNumber == 1 || player.hasPermission("anarchy.homes.multiple");
     }
 
     public void reload() {

@@ -36,7 +36,7 @@ public class AnarchySystem extends JavaPlugin {
 
     private void registerCommands() {
         if (configManager.isModuleEnabled("homes")) {
-            HomesTabCompleter tabCompleter = new de.syscall.command.HomesTabCompleter(this);
+            HomesTabCompleter tabCompleter = new HomesTabCompleter(this);
 
             getCommand("sethome").setExecutor(new SetHomeCommand(this));
             getCommand("sethome").setTabCompleter(tabCompleter);

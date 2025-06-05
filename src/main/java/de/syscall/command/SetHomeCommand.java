@@ -1,7 +1,6 @@
 package de.syscall.command;
 
 import de.syscall.AnarchySystem;
-import de.syscall.util.ChatUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -44,6 +43,8 @@ public class SetHomeCommand implements CommandExecutor {
 
         if (plugin.getHomesManager().setHome(player, homeNumber, player.getLocation())) {
             player.sendMessage(plugin.getConfigManager().formatMessage("home-set", "home", String.valueOf(homeNumber)).replace("&", "§"));
+        } else {
+            player.sendMessage(plugin.getConfigManager().getMessage("max-homes-reached").replace("&", "§"));
         }
 
         return true;
