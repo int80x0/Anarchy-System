@@ -1,0 +1,54 @@
+﻿name: Anarchy-System
+version: '1.0'
+main: de.syscall.AnarchySystem
+api-version: '1.21'
+authors: [80x0]
+description: Modular Anarchy System with Homes
+softdepend: [LuckPerms]
+
+permissions:
+  anarchy.*:
+    description: All permissions
+    default: op
+  anarchy.reload:
+    description: Reload plugin
+    default: op
+  anarchy.homes.use:
+    description: Use homes system
+    default: true
+  anarchy.homes.set:
+    description: Set homes
+    default: true
+  anarchy.homes.multiple:
+    description: Set multiple homes
+    default: false
+  anarchy.homes.epic:
+    description: Epic rank homes (2 homes)
+    default: false
+  anarchy.homes.ultra:
+    description: Ultra rank homes (4 homes)
+    default: false
+  anarchy.homes.hero:
+    description: Hero rank homes (6 homes)
+    default: false
+  anarchy.homes.legendary:
+    description: Legendary rank homes (10 homes)
+    default: false
+
+commands:
+  sethome:
+    description: Set a home
+    usage: /sethome [number]
+  home:
+    description: Teleport to home
+    usage: /home [number]
+  homes:
+    description: Open homes GUI
+    usage: /homes
+  delhome:
+    description: Delete a home
+    usage: /delhome [number]
+  anarchy-system:
+    description: Main command
+    usage: /anarchy-system <reload>
+    aliases: [as]
