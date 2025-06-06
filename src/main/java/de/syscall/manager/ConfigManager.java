@@ -98,35 +98,35 @@ public class ConfigManager {
     }
 
     public int getParticleCirclePoints() {
-        return config.getInt("packet-particles.circle-points", 16);
+        return config.getInt("home-particles.circle-points", 16);
     }
 
     public double getParticleDetectionRadius() {
-        return config.getDouble("packet-particles.detection-radius", 30.0);
+        return config.getDouble("home-particles.detection-radius", 30.0);
     }
 
     public double getParticleCircleRadius() {
-        return config.getDouble("packet-particles.circle-radius", 0.75);
+        return config.getDouble("home-particles.circle-radius", 0.75);
     }
 
     public int getParticleCount() {
-        return config.getInt("packet-particles.particle-count", 2);
+        return config.getInt("home-particles.particle-count", 2);
     }
 
     public double getParticleYOffset() {
-        return config.getDouble("packet-particles.y-offset", 1.0);
+        return config.getDouble("home-particles.y-offset", 1.0);
     }
 
     public double getParticleRotationSpeed() {
-        return config.getDouble("packet-particles.rotation-speed", 0.19634954084936207);
+        return config.getDouble("home-particles.rotation-speed", 0.19634954084936207);
     }
 
     public String getParticleType() {
-        return config.getString("packet-particles.particle-type", "ELECTRIC_SPARK");
+        return config.getString("home-particles.particle-type", "ELECTRIC_SPARK");
     }
 
     public String getParticleColor() {
-        return config.getString("packet-particles.color", "0,255,255");
+        return config.getString("home-particles.color", "0,255,255");
     }
 
     public String getTeleportMessage(String key) {
@@ -154,35 +154,59 @@ public class ConfigManager {
     }
 
     public double getTeleportAnimationHeight() {
-        return config.getDouble("teleport-animation.spiral-height", 2.0);
+        return config.getDouble("teleport-animation.spiral.height", 2.0);
     }
 
     public double getTeleportAnimationRadius() {
         return config.getDouble("teleport-animation.radius", 1.0);
     }
 
+    public double getTeleportAnimationRotationSpeed() {
+        return config.getDouble("teleport-animation.circle.rotation-speed", 0.19634954084936207);
+    }
+
+    public boolean isSpiralAnimationEnabled() {
+        return config.getBoolean("teleport-animation.spiral.enabled", true);
+    }
+
+    public boolean isCircleAnimationEnabled() {
+        return config.getBoolean("teleport-animation.circle.enabled", true);
+    }
+
+    public boolean isDestinationAnimationEnabled() {
+        return config.getBoolean("teleport-animation.destination.enabled", true);
+    }
+
     public int getTeleportAnimationParticleCount() {
-        return config.getInt("teleport-animation.particle-count", 3);
+        return config.getInt("teleport-animation.circle.particle-count", 3);
     }
 
     public int getTeleportAnimationSpiralParticleCount() {
-        return config.getInt("teleport-animation.spiral-particle-count", 6);
+        return config.getInt("teleport-animation.spiral.particle-count", 6);
     }
 
     public String getTeleportAnimationParticleType() {
-        return config.getString("teleport-animation.particle-type", "ELECTRIC_SPARK");
+        return config.getString("teleport-animation.circle.particle-type", "ELECTRIC_SPARK");
     }
 
     public String getTeleportAnimationSpiralParticleType() {
-        return config.getString("teleport-animation.spiral-particle-type", "DUST_COLOR_TRANSITION");
+        return config.getString("teleport-animation.spiral.particle-type", "DUST_COLOR_TRANSITION");
     }
 
     public String getTeleportAnimationParticleColor() {
-        return config.getString("teleport-animation.particle-color", "0,255,255");
+        return config.getString("teleport-animation.circle.particle-color", "0,255,255");
+    }
+
+    public double getTeleportAnimationCircleYOffset() {
+        return config.getDouble("teleport-animation.circle.y-offset", 0.1);
+    }
+
+    public double getTeleportAnimationSpiralYOffset() {
+        return config.getDouble("teleport-animation.spiral.y-offset", 0.0);
     }
 
     public String getTeleportAnimationSpiralParticleColor() {
-        return config.getString("teleport-animation.spiral-particle-color", "255,215,0-255,69,0");
+        return config.getString("teleport-animation.spiral.particle-color", "255,215,0-255,69,0");
     }
 
     public double getTeleportAnimationViewDistance() {
@@ -210,7 +234,7 @@ public class ConfigManager {
     }
 
     public double getTeleportAnimationSpiralTurns() {
-        return config.getDouble("teleport-animation.spiral-turns", 3.0);
+        return config.getDouble("teleport-animation.spiral.turns", 3.0);
     }
 
     public FileConfiguration getConfig() {

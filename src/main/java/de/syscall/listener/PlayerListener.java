@@ -16,7 +16,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (plugin.getConfigManager().isModuleEnabled("packet-particles") &&
+        if (plugin.getConfigManager().isModuleEnabled("home-particles") &&
                 plugin.getParticleManager().isAvailable()) {
             plugin.getParticleManager().startParticleTask(event.getPlayer());
         }

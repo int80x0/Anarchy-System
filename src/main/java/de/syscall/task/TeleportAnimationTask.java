@@ -4,8 +4,10 @@ import de.syscall.AnarchySystem;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 public class TeleportAnimationTask extends BukkitRunnable {
 
@@ -21,6 +23,10 @@ public class TeleportAnimationTask extends BukkitRunnable {
     private int lastSoundTick = -20;
     private final Location originalPlayerLocation;
     private final double movementThreshold;
+
+    private double currentFromRotationAngle = 0.0;
+    private double currentToRotationAngle = 0.0;
+    private int spiralTicks = 0;
 
     public TeleportAnimationTask(AnarchySystem plugin, Player player, Location fromLocation, Location toLocation, Runnable onComplete) {
         this.plugin = plugin;
@@ -53,12 +59,20 @@ public class TeleportAnimationTask extends BukkitRunnable {
         }
 
         double progress = (double) ticksElapsed / totalTicks;
-        double spiralHeight = plugin.getConfigManager().getTeleportAnimationHeight();
 
-        spawnSpiralParticles(fromLocation, progress, true);
-        spawnSpiralParticles(toLocation, progress, false);
-        spawnCircleParticles(fromLocation);
-        spawnCircleParticles(toLocation);
+        if (plugin.getConfigManager().isSpiralAnimationEnabled()) {
+            spawnSpiralParticles(fromLocation, progress, true);
+            if (plugin.getConfigManager().isDestinationAnimationEnabled()) {
+                spawnSpiralParticles(toLocation, progress, false);
+            }
+        }
+
+        if (plugin.getConfigManager().isCircleAnimationEnabled()) {
+            spawnCircleParticles(fromLocation);
+            if (plugin.getConfigManager().isDestinationAnimationEnabled()) {
+                spawnCircleParticles(toLocation);
+            }
+        }
 
         if (ticksElapsed - lastSoundTick >= soundInterval) {
             playSound();
@@ -66,6 +80,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
         }
 
         ticksElapsed += 2;
+        spiralTicks++;
     }
 
     private void spawnSpiralParticles(Location location, double progress, boolean upward) {
@@ -73,6 +88,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
         double radius = plugin.getConfigManager().getTeleportAnimationRadius();
         int spiralParticleCount = plugin.getConfigManager().getTeleportAnimationSpiralParticleCount();
         double spiralTurns = plugin.getConfigManager().getTeleportAnimationSpiralTurns();
+        double spiralYOffset = plugin.getConfigManager().getTeleportAnimationSpiralYOffset();
 
         for (int i = 0; i < spiralParticleCount; i++) {
             double particleProgress = progress + (i * (1.0 / spiralParticleCount));
@@ -90,12 +106,60 @@ public class TeleportAnimationTask extends BukkitRunnable {
             }
             double currentAngle = currentProgress * spiralTurns * 2 * Math.PI;
 
-            double x = location.getX() + radius * Math.cos(currentAngle);
-            double y = location.getY() + currentHeight;
-            double z = location.getZ() + radius * Math.sin(currentAngle);
+            Vector direction = location.getDirection().setY(0).normalize();
+            if (direction.lengthSquared() == 0.0) {
+                direction = new Vector(0, 0, 1);
+            }
+            Vector right = direction.clone().crossProduct(new Vector(0, -1, 0)).normalize();
 
-            Location particleLocation = new Location(location.getWorld(), x, y, z);
+            double local_x = radius * Math.cos(currentAngle);
+            double local_z = radius * Math.sin(currentAngle);
+
+            Location particleLocation = location.clone().add(0, currentHeight + spiralYOffset, 0);
+            particleLocation.add(right.clone().multiply(local_x));
+            particleLocation.add(direction.clone().multiply(local_z));
+
             spawnSpiralParticle(particleLocation);
+        }
+    }
+
+    private void spawnCircleParticles(Location location) {
+        double radius = plugin.getConfigManager().getTeleportAnimationRadius();
+        int particleCount = plugin.getConfigManager().getTeleportAnimationParticleCount();
+        double rotationSpeed = plugin.getConfigManager().getTeleportAnimationRotationSpeed();
+        double yOffset = plugin.getConfigManager().getTeleportAnimationCircleYOffset();
+
+        boolean isFromLocation = location.equals(fromLocation);
+        double currentAngle = isFromLocation ? currentFromRotationAngle : currentToRotationAngle;
+
+        Vector direction = location.getDirection().setY(0).normalize();
+        if (direction.lengthSquared() == 0.0) {
+            direction = new Vector(0, 0, 1);
+        }
+        Vector right = direction.clone().crossProduct(new Vector(0, -1, 0)).normalize();
+
+        for (int i = 0; i < particleCount; i++) {
+            double angle = currentAngle + (2 * Math.PI * i) / particleCount;
+            double local_x = radius * Math.cos(angle);
+            double local_z = radius * Math.sin(angle);
+
+            Location particleLocation = location.clone().add(0, yOffset, 0);
+            particleLocation.add(right.clone().multiply(local_x));
+            particleLocation.add(direction.clone().multiply(local_z));
+
+            spawnCircleParticle(particleLocation);
+        }
+
+        if (isFromLocation) {
+            currentFromRotationAngle += rotationSpeed;
+            if (currentFromRotationAngle >= 2 * Math.PI) {
+                currentFromRotationAngle -= 2 * Math.PI;
+            }
+        } else {
+            currentToRotationAngle += rotationSpeed;
+            if (currentToRotationAngle >= 2 * Math.PI) {
+                currentToRotationAngle -= 2 * Math.PI;
+            }
         }
     }
 
@@ -111,7 +175,6 @@ public class TeleportAnimationTask extends BukkitRunnable {
 
             for (Player nearbyPlayer : location.getWorld().getPlayers()) {
                 if (nearbyPlayer.getLocation().distance(location) <= viewDistance) {
-
                     if (particle == Particle.DUST && !colorConfig.isEmpty()) {
                         org.bukkit.Color color = parseColor(colorConfig);
                         Particle.DustOptions dustOptions = new Particle.DustOptions(color, 1.0f);
@@ -139,35 +202,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
         }
     }
 
-    private boolean hasPlayerMoved() {
-        Location currentLocation = player.getLocation();
-        double distance = originalPlayerLocation.distance(currentLocation);
-        return distance > movementThreshold;
-    }
-
-    private void cancelAnimation() {
-        cancel();
-        plugin.getTeleportAnimationManager().stopAnimation(player);
-    }
-
-    private void spawnCircleParticles(Location location) {
-        double radius = plugin.getConfigManager().getTeleportAnimationRadius();
-        int particleCount = plugin.getConfigManager().getTeleportAnimationParticleCount() * 2;
-        double rotationSpeed = 0.1;
-        double currentAngle = ticksElapsed * rotationSpeed;
-
-        for (int i = 0; i < particleCount; i++) {
-            double angle = currentAngle + (2 * Math.PI * i) / particleCount;
-            double x = location.getX() + radius * Math.cos(angle);
-            double z = location.getZ() + radius * Math.sin(angle);
-            double y = location.getY() + 0.1;
-
-            Location particleLocation = new Location(location.getWorld(), x, y, z);
-            spawnWorldParticle(particleLocation);
-        }
-    }
-
-    private void spawnWorldParticle(Location location) {
+    private void spawnCircleParticle(Location location) {
         if (location.getWorld() == null) return;
 
         String particleType = plugin.getConfigManager().getTeleportAnimationParticleType();
@@ -179,7 +214,6 @@ public class TeleportAnimationTask extends BukkitRunnable {
 
             for (Player nearbyPlayer : location.getWorld().getPlayers()) {
                 if (nearbyPlayer.getLocation().distance(location) <= viewDistance) {
-
                     if (particle == Particle.DUST && !colorConfig.isEmpty()) {
                         org.bukkit.Color color = parseColor(colorConfig);
                         Particle.DustOptions dustOptions = new Particle.DustOptions(color, 1.0f);
@@ -193,7 +227,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
                     } else if (particle == Particle.ENTITY_EFFECT && !colorConfig.isEmpty()) {
                         org.bukkit.Color color = parseColor(colorConfig);
                         nearbyPlayer.spawnParticle(particle, location, 1, 0, 0, 0, 0, color, true);
-                    }else {
+                    } else {
                         nearbyPlayer.spawnParticle(particle, location, 1, 0, 0, 0, 0, null, true);
                     }
                 }
@@ -219,6 +253,17 @@ public class TeleportAnimationTask extends BukkitRunnable {
         }
     }
 
+    private boolean hasPlayerMoved() {
+        Location currentLocation = player.getLocation();
+        double distance = originalPlayerLocation.distance(currentLocation);
+        return distance > movementThreshold;
+    }
+
+    private void cancelAnimation() {
+        cancel();
+        plugin.getTeleportAnimationManager().stopAnimation(player);
+    }
+
     private void playSound() {
         int currentSecond = (ticksElapsed / 20) + 1;
         int totalSeconds = plugin.getConfigManager().getTeleportAnimationDuration();
@@ -242,6 +287,7 @@ public class TeleportAnimationTask extends BukkitRunnable {
     }
 
     private void finishTeleport() {
+        playFinalSound();
         cancelAnimation();
 
         new BukkitRunnable() {
@@ -252,5 +298,20 @@ public class TeleportAnimationTask extends BukkitRunnable {
                 }
             }
         }.runTask(plugin);
+    }
+
+    private void playFinalSound() {
+        String soundName = plugin.getConfigManager().getTeleportAnimationFinalSound();
+        if (soundName == null || soundName.isEmpty()) return;
+
+        try {
+            Sound sound = Sound.valueOf(soundName.toUpperCase());
+            float volume = plugin.getConfigManager().getTeleportAnimationSoundVolume();
+            float pitch = plugin.getConfigManager().getTeleportAnimationSoundPitch();
+
+            player.playSound(player.getLocation(), sound, volume, pitch);
+        } catch (Exception e) {
+            player.playSound(player.getLocation(), Sound.ITEM_CHORUS_FRUIT_TELEPORT, 0.5f, 1.0f);
+        }
     }
 }

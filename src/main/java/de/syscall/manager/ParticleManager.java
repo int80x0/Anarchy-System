@@ -32,7 +32,7 @@ public class ParticleManager {
     }
 
     public boolean isAvailable() {
-        return protocolLibAvailable && plugin.getConfigManager().isModuleEnabled("packet-particles");
+        return protocolLibAvailable && plugin.getConfigManager().isModuleEnabled("home-particles");
     }
 
     public void startParticleTask(Player player) {
