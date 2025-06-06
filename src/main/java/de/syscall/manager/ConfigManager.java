@@ -269,6 +269,82 @@ public class ConfigManager {
         return config.getString("hints.messages." + key, "Hint not found: " + key);
     }
 
+    public boolean isDeathSystemEnabled() {
+        return config.getBoolean("death-system.enabled", true);
+    }
+
+    public boolean isCorpseEnabled() {
+        return config.getBoolean("death-system.corpse.enabled", true);
+    }
+
+    public int getCorpseDisplayDuration() {
+        return config.getInt("death-system.corpse.display-duration", 4);
+    }
+
+    public double getCorpseSinkRate() {
+        return config.getDouble("death-system.corpse.sink-rate", 0.05);
+    }
+
+    public double getCorpseSinkDepth() {
+        return config.getDouble("death-system.corpse.sink-depth", 2.0);
+    }
+
+    public int getCorpseSinkSpeed() {
+        return config.getInt("death-system.corpse.sink-speed", 2);
+    }
+
+    public int getLootHeadDuration() {
+        return config.getInt("death-system.loot-head.duration", 180);
+    }
+
+    public double getHeadRotationSpeed() {
+        return config.getDouble("death-system.loot-head.rotation-speed", 2.0);
+    }
+
+    public String getDeathLootText() {
+        return config.getString("death-system.loot-head.display-text", "&6Loot of &f%player%");
+    }
+
+    public boolean isLootFountainEnabled() {
+        return config.getBoolean("death-system.loot-fountain.enabled", true);
+    }
+
+    public double getFountainHeight() {
+        return config.getDouble("death-system.loot-fountain.height", 1.5);
+    }
+
+    public double getFountainRadius() {
+        return config.getDouble("death-system.loot-fountain.radius", 1.0);
+    }
+
+    public String getLootCollectSound() {
+        return config.getString("death-system.loot-fountain.collect-sound", "ENTITY_ITEM_PICKUP");
+    }
+
+    public float getLootCollectSoundVolume() {
+        return (float) config.getDouble("death-system.loot-fountain.sound-volume", 1.0);
+    }
+
+    public float getLootCollectSoundPitch() {
+        return (float) config.getDouble("death-system.loot-fountain.sound-pitch", 1.0);
+    }
+
+    public boolean shouldClearDropsOnDeath() {
+        return config.getBoolean("death-system.clear-drops", true);
+    }
+
+    public boolean canCollectOwnLoot() {
+        return config.getBoolean("death-system.allow-self-collect", false);
+    }
+
+    public int getMaxExperienceDrop() {
+        return config.getInt("death-system.max-experience-drop", 100);
+    }
+
+    public String getDeathMessage(String key) {
+        return config.getString("messages.death." + key, "Death message not found: " + key);
+    }
+
     public FileConfiguration getConfig() {
         return config;
     }

@@ -27,6 +27,70 @@ modules:
     enabled: true
   teleport-animation:
     enabled: true
+  death-system:
+    enabled: true
+
+# Death System Configuration
+death-system:
+  # Enable or disable the entire death system
+  enabled: true
+  
+  # Clear vanilla drops when player dies (items will be handled by our system)
+  clear-drops: true
+  
+  # Allow players to collect their own loot
+  allow-self-collect: false
+  
+  # Maximum experience that can be dropped (prevents lag with high level players)
+  max-experience-drop: 100
+  
+  # Corpse Configuration
+  corpse:
+    # Enable corpse spawning (if disabled, only loot head will spawn)
+    enabled: true
+    
+    # How long the corpse stays visible before sinking (seconds)
+    display-duration: 4
+    
+    # How fast the corpse sinks into the ground (blocks per tick)
+    sink-rate: 0.05
+    
+    # Maximum depth the corpse will sink
+    sink-depth: 2.0
+    
+    # Speed of sinking animation (ticks between sink steps)
+    sink-speed: 2
+  
+  # Loot Head Configuration
+  loot-head:
+    # How long the loot head stays (seconds)
+    duration: 180
+    
+    # Rotation speed of the head (degrees per tick)
+    rotation-speed: 2.0
+    
+    # Text displayed above the loot head
+    display-text: "&6Loot of &f%player%"
+  
+  # Loot Fountain Configuration
+  loot-fountain:
+    # Enable fountain effect when collecting loot
+    enabled: true
+    
+    # Height of the fountain effect (blocks)
+    height: 1.5
+    
+    # Radius of the fountain spread (blocks)
+    radius: 1.0
+    
+    # Sound played when collecting loot
+    collect-sound: "ENTITY_ITEM_PICKUP"
+    
+    # Volume of the collect sound (0.0 - 1.0)
+    sound-volume: 1.0
+    
+    # Pitch of the collect sound (0.5 - 2.0)
+    sound-pitch: 1.0
 
 # Hint System Configuration
 hints:
@@ -43,6 +107,7 @@ hints:
     homes-gui: "&6&lHomes GUI &8» &7Use &f/homes &7to open an interactive GUI to manage all your homes easily!"
     tpa-commands: "&6&lTPA System &8» &7Use &f/tpaccept &7or &f/tpdeny &7to respond to teleport requests. Toggle with &f/tpatoggle&7!"
     death-locations: "&6&lDeath Tracking &8» &7Your last location is automatically saved when you teleport or die!"
+    death-system: "&6&lDeath System &8» &7When you die, your corpse will sink and become a loot head that others can collect!"
 
 # Teleport System Configuration
 teleport:
@@ -326,6 +391,14 @@ messages:
     no-permission: "&c&lERROR &8» &7Insufficient permissions"
     invalid-number: "&c&lERROR &8» &7Invalid home number provided"
     config-reloaded: "&a&lRELOAD &8» &7Configuration has been reloaded"
+  
+  # Death System Messages
+  death:
+    loot-collected: "&a&lCOLLECTED &8» &7You collected the loot of &f%player%"
+    cannot-collect-own-loot: "&c&lERROR &8» &7You cannot collect your own loot"
+    loot-expired: "&c&lEXPIRED &8» &7The loot of &f%player% &7has expired"
+    corpse-spawned: "&c&lDEATH &8» &7Your corpse will sink and become collectible loot"
+    loot-head-spawned: "&6&lLOOT &8» &7Your loot is now available for collection"
   
   # Teleport Messages
   teleport:
