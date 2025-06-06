@@ -15,6 +15,7 @@ public class AnarchySystem extends JavaPlugin {
     private ParticleManager particleManager;
     private TeleportManager teleportManager;
     private TeleportAnimationManager teleportAnimationManager;
+    private HintManager hintManager;
 
     @Override
     public void onEnable() {
@@ -26,6 +27,7 @@ public class AnarchySystem extends JavaPlugin {
         this.particleManager = new ParticleManager(this);
         this.teleportManager = new TeleportManager(this);
         this.teleportAnimationManager = new TeleportAnimationManager(this);
+        this.hintManager = new HintManager(this);
 
         registerCommands();
         registerListeners();
@@ -103,7 +105,7 @@ public class AnarchySystem extends JavaPlugin {
             homesManager.reload();
         }
 
-        if (particleManager != null && configManager.isModuleEnabled("home-particles")) {
+        if (particleManager != null && configManager.isModuleEnabled("packet-particles")) {
             for (org.bukkit.entity.Player player : getServer().getOnlinePlayers()) {
                 particleManager.startParticleTask(player);
             }
@@ -142,5 +144,9 @@ public class AnarchySystem extends JavaPlugin {
 
     public TeleportAnimationManager getTeleportAnimationManager() {
         return teleportAnimationManager;
+    }
+
+    public HintManager getHintManager() {
+        return hintManager;
     }
 }

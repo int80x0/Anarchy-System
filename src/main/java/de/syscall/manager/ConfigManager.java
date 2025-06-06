@@ -237,6 +237,18 @@ public class ConfigManager {
         return config.getDouble("teleport-animation.spiral.turns", 3.0);
     }
 
+    public boolean isHintsEnabled() {
+        return config.getBoolean("hints.enabled", true);
+    }
+
+    public String getHintText() {
+        return config.getString("hints.text", "(hint)");
+    }
+
+    public String getHintMessage(String key) {
+        return config.getString("hints.messages." + key, "Hint not found: " + key);
+    }
+
     public FileConfiguration getConfig() {
         return config;
     }

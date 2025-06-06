@@ -8,73 +8,178 @@
 modules:
   homes:
     enabled: true
-  home-particles:
+  packet-particles:
     enabled: true
   teleport:
     enabled: true
   teleport-animation:
     enabled: true
 
+# Hint System Configuration
+hints:
+  # Enable or disable hint system
+  enabled: true
+  
+  # Text displayed after messages (clickable hint)
+  text: "&7(hint)"
+  
+  # Hover messages for different command hints
+  messages:
+    particle-animation: "&6&lParticle Animation &8» &7Your set homes will be displayed with a cool particle animation when you are nearby!"
+    teleport-animation: "&6&lTeleport Animation &8» &7Enjoy the spectacular teleportation animation with particles and sound effects!"
+    homes-gui: "&6&lHomes GUI &8» &7Use &f/homes &7to open an interactive GUI to manage all your homes easily!"
+    tpa-commands: "&6&lTPA System &8» &7Use &f/tpaccept &7or &f/tpdeny &7to respond to teleport requests. Toggle with &f/tpatoggle&7!"
+    death-locations: "&6&lDeath Tracking &8» &7Your last location is automatically saved when you teleport or die!"
+
 # Teleport System Configuration
 teleport:
+  # Timeout for TPA requests in seconds
   tpa-timeout: 60
+  
+  # Cooldown for TPA commands in seconds
   tpa-cooldown: 30
+  
+  # Cooldown for /back command in seconds
   back-cooldown: 10
 
 # Teleport Animation Configuration
 teleport-animation:
+  # Enable teleport animations
   enabled: true
+  
+  # Duration of animation in seconds
   duration: 6
+  
+  # Height of spiral animation (blocks)
+  spiral-height: 2.0
+  
+  # Radius of spiral and circle effects
   radius: 1.0
+  
+  # Number of particles in circle animation
+  particle-count: 3
+  
+  # Number of particles in spiral animation
+  spiral-particle-count: 6
+  
+  # Circle particle configuration
+  particle-type: "ELECTRIC_SPARK"
+  particle-color: "0,255,255"
+  
+  # Spiral particle configuration
+  spiral-particle-type: "DUST_COLOR_TRANSITION"
+  spiral-particle-color: "255,215,0-255,69,0"
+  
+  # Distance players can see the animation
   view-distance: 40.0
+  
+  # Movement threshold to cancel teleport (blocks)
   movement-threshold: 0.5
-
-  # Spiral Animation (upward spiraling particles)
-  spiral:
-    enabled: true
-    height: 2.0
-    y-offset: 0.2
-    particle-count: 6
-    turns: 3.0
-    particle-type: "DUST_COLOR_TRANSITION"
-    particle-color: "255,215,0-255,69,0"
-
-  # Circle Animation (rotating circle particles)
-  circle:
-    enabled: true
-    particle-count: 3
-    rotation-speed: 0.19634954084936207
-    y-offset: 0.1
-    particle-type: "ELECTRIC_SPARK"
-    particle-color: "0,255,255"
-
-  # Destination Animation (show particles at teleport destination)
-  destination:
-    enabled: true
-
-  # Sound Configuration
+  
+  # Number of turns the spiral makes during animation
+  spiral-turns: 3.0
+  
+  # Sound configuration
   sounds:
+    # Sound played during spiral animation
     loop: "ENTITY_BAT_TAKEOFF"
+    
+    # Sound played at final second
     final: "ITEM_CHORUS_FRUIT_TELEPORT"
+    
+    # Sound volume (0.0 - 1.0)
     volume: 0.5
+    
+    # Sound pitch (0.5 - 2.0)
     pitch: 1.0
 
-# Home Location Particles Configuration
-home-particles:
+# Packet Particles Configuration
+packet-particles:
+  # Distance in blocks when particles become visible to player
   detection-radius: 40.0
+  
+  # Radius of the circle animation around home location
   circle-radius: 0.75
+  
+  # Number of particles in the circle (2 = opposite particles like example)
   particle-count: 3
+  
+  # Y-axis offset from ground level
   y-offset: 0.2
+  
+  # Rotation speed (higher = faster rotation)
   rotation-speed: 0.05
+  
+  # Particle type - Available options:
+  # 
+  # COLORABLE PARTICLES (support color configuration):
+  # DUST (RGB color format: "255,0,0")
+  # DUST_COLOR_TRANSITION (RGB1-RGB2 format: "255,0,0-0,0,255")
+  # ENTITY_EFFECT (RGB color format: "255,0,0") 
+  # REDSTONE (RGB color format: "255,0,0" - legacy support)
+  #
+  # NON-COLORABLE PARTICLES (ignore color setting):
+  # ELECTRIC_SPARK
+  # FIREWORK (has its own colorful animation)
+  # FIREWORKS_SPARK (deprecated, use FIREWORK)
+  # FLAME
+  # HEART
+  # ENCHANT
+  # CRIT
+  # MAGIC_CRIT
+  # SPELL
+  # INSTANT_SPELL
+  # MOB_SPELL
+  # WITCH_SPELL
+  # NOTE
+  # PORTAL
+  # ENCHANTMENT_TABLE
+  # EXPLOSION
+  # EXPLOSION_LARGE
+  # EXPLOSION_HUGE
+  # WATER_BUBBLE
+  # WATER_SPLASH
+  # WATER_WAKE
+  # SUSPENDED
+  # SUSPENDED_DEPTH
+  # CRIT_MAGIC
+  # SMOKE_NORMAL
+  # SMOKE_LARGE
+  # SPELL_MOB
+  # SPELL_MOB_AMBIENT
+  # SPELL_WITCH
+  # DRIP_WATER
+  # DRIP_LAVA
+  # ANGRY_VILLAGER
+  # HAPPY_VILLAGER
+  # TOWN_AURA
+  # NOTE_BLOCK
+  # PORTAL_AMBIENT
+  # SNOWBALL
+  # SNOW_SHOVEL
+  # SLIME
+  # END_ROD
+  # DRAGON_BREATH
+  # DAMAGE_INDICATOR
+  # SWEEP_ATTACK
+  # FALLING_DUST
   particle-type: "DUST_COLOR_TRANSITION"
+  
+  # Color configuration (only works with colorable particles)
+  # For DUST & ENTITY_EFFECT: "R,G,B" (example: "255,0,0" for red)
+  # For DUST_COLOR_TRANSITION: "R1,G1,B1-R2,G2,B2" (example: "255,0,0-0,0,255" for red to blue)
+  # For REDSTONE: "R,G,B" (legacy format, example: "255,0,0" for red)
+  # For non-colorable particles: leave empty "" or any value (will be ignored)
   color: "255,0,0-0,0,255"
 
 # Homes System Configuration
 homes:
+  # Basic Settings
   default-homes: 1
   max-homes: 10
   luckperms-integration: true
   
+  # Rank System
   ranks:
     epic:
       homes: 2
@@ -93,9 +198,12 @@ homes:
       luckperms-group: "legendary"
       permission: "anarchy.homes.legendary"
   
+  # GUI Configuration
   gui:
     title: "&8[&6Homes&8] &7Manager"
     
+    # Layout Design (9x6 inventory)
+    # Symbols: . = home slot, # = border, < = previous, > = next, X = close
     layout:
       - "#########"
       - "#0000000#"
@@ -104,6 +212,7 @@ homes:
       - "#0000000#"
       - "<###X###>"
     
+    # Interface Elements
     items:
       "#":
         material: "BLACK_STAINED_GLASS_PANE"
@@ -118,6 +227,7 @@ homes:
         material: "BARRIER"
         name: "&cClose Menu"
     
+    # Home Item Configurations
     homes:
       1:
         material: "WHITE_BED"
@@ -160,34 +270,9 @@ homes:
         name: "&dHome 10 &8- Legendary"
         rank: "legendary"
 
-# ==========================================
-#           PARTICLE TYPE REFERENCE
-# ==========================================
-# 
-# COLORABLE PARTICLES (support color configuration):
-# ┌─────────────────────────────────────────────────────────────────┐
-# │ DUST                    - RGB format: "255,0,0"                │
-# │ DUST_COLOR_TRANSITION   - RGB1-RGB2 format: "255,0,0-0,0,255"  │
-# │ ENTITY_EFFECT          - RGB format: "255,0,0"                 │
-# │ REDSTONE               - RGB format: "255,0,0" (legacy)        │
-# └─────────────────────────────────────────────────────────────────┘
-#
-# NON-COLORABLE PARTICLES (ignore color setting):
-# ┌─────────────────────────────────────────────────────────────────┐
-# │ ELECTRIC_SPARK    FIREWORK           FLAME             HEART    │
-# │ ENCHANT          CRIT               MAGIC_CRIT         SPELL     │
-# │ INSTANT_SPELL    MOB_SPELL          WITCH_SPELL        NOTE      │
-# │ PORTAL           ENCHANTMENT_TABLE  EXPLOSION          EXPLOSION_LARGE │
-# │ EXPLOSION_HUGE   WATER_BUBBLE       WATER_SPLASH       WATER_WAKE │
-# │ SUSPENDED        SUSPENDED_DEPTH    CRIT_MAGIC         SMOKE_NORMAL │
-# │ SMOKE_LARGE      SPELL_MOB          SPELL_MOB_AMBIENT  SPELL_WITCH │
-# │ DRIP_WATER       DRIP_LAVA          ANGRY_VILLAGER     HAPPY_VILLAGER │
-# │ TOWN_AURA        NOTE_BLOCK         PORTAL_AMBIENT     SNOWBALL │
-# │ SNOW_SHOVEL      SLIME              END_ROD            DRAGON_BREATH │
-# │ DAMAGE_INDICATOR SWEEP_ATTACK       FALLING_DUST       │
-# └─────────────────────────────────────────────────────────────────┘
-
+# Message Configuration
 messages:
+  # Command Messages
   commands:
     home-set: "&a&lSUCCESS &8» &7Home &f%home% &7has been set"
     home-teleported: "&a&lTELEPORT &8» &7Teleported to home &f%home%"
@@ -198,7 +283,9 @@ messages:
     invalid-number: "&c&lERROR &8» &7Invalid home number provided"
     config-reloaded: "&a&lRELOAD &8» &7Configuration has been reloaded"
   
+  # Teleport Messages
   teleport:
+    # TPA System
     tpa-sent: "&a&lTPA &8» &7Teleport request sent to &f%player%"
     tpa-received: "&6&lTPA &8» &f%player% &7wants to teleport to you"
     tpahere-sent: "&a&lTPAHERE &8» &7Teleport request sent to &f%player%"
@@ -211,6 +298,7 @@ messages:
     tpa-timeout-target: "&c&lTIMEOUT &8» &7Teleport request from &f%player% &7has expired"
     teleport-cancelled-movement: "&c&lCANCELLED &8» &7Teleport cancelled due to movement"
     
+    # TPA Errors
     tpa-self: "&c&lERROR &8» &7You cannot send a teleport request to yourself"
     tpa-disabled: "&c&lERROR &8» &f%player% &7has teleport requests disabled"
     tpa-blocked: "&c&lERROR &8» &f%player% &7has blocked your teleport requests"
@@ -220,18 +308,23 @@ messages:
     no-pending-request: "&c&lERROR &8» &7You have no pending teleport requests"
     requester-offline: "&c&lERROR &8» &7The player who sent the request is no longer online"
     
+    # TPA Toggle
     tpa-enabled-self: "&a&lTPA &8» &7Teleport requests are now &aenabled"
     tpa-disabled-self: "&c&lTPA &8» &7Teleport requests are now &cdisabled"
     
+    # Back System
     back-teleported: "&a&lBACK &8» &7Teleported to your previous location"
     back-cooldown: "&c&lCOOLDOWN &8» &7Wait &f%time% &7seconds before using /back again"
     no-back-location: "&c&lERROR &8» &7No previous location found"
     back-world-not-found: "&c&lERROR &8» &7Your previous location's world no longer exists"
     
+    # Usage Messages
     tpa-usage: "&c&lUSAGE &8» &7/tpa <player>"
     tpahere-usage: "&c&lUSAGE &8» &7/tpahere <player>"
   
+  # GUI Messages
   gui:
+    # Home Item Descriptions
     home-set-lore:
       - "&7World: &f%world%"
       - "&7Position: &f%x% &8/ &f%y% &8/ &f%z%"
@@ -251,10 +344,12 @@ messages:
       - "&7Upgrade your rank to unlock"
       - "&7this home slot"
     
+    # GUI Interaction Messages
     messages:
       no-access: "&c&lERROR &8» &7You cannot access this home slot"
       world-not-found: "&c&lERROR &8» &7Home world no longer exists"
   
+  # Rank Display Names
   ranks:
     default: "&7Default"
     epic: "&6Epic"

@@ -38,7 +38,7 @@ public class DelHomeCommand implements CommandExecutor {
         }
 
         if (plugin.getHomesManager().deleteHome(player, homeNumber)) {
-            player.sendMessage(plugin.getConfigManager().formatMessage("home-deleted", "home", String.valueOf(homeNumber)).replace("&", "§"));
+            plugin.getHintManager().sendMessageWithHint(player, "home-deleted", "homes-gui", "home", String.valueOf(homeNumber));
         } else {
             player.sendMessage(plugin.getConfigManager().formatMessage("home-not-found", "home", String.valueOf(homeNumber)).replace("&", "§"));
         }

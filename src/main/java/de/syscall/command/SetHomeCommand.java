@@ -42,7 +42,7 @@ public class SetHomeCommand implements CommandExecutor {
         }
 
         if (plugin.getHomesManager().setHome(player, homeNumber, player.getLocation())) {
-            player.sendMessage(plugin.getConfigManager().formatMessage("home-set", "home", String.valueOf(homeNumber)).replace("&", "§"));
+            plugin.getHintManager().sendMessageWithHint(player, "home-set", "particle-animation", "home", String.valueOf(homeNumber));
         } else {
             player.sendMessage(plugin.getConfigManager().getMessage("max-homes-reached").replace("&", "§"));
         }

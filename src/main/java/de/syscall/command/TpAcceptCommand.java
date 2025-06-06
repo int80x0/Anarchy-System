@@ -26,7 +26,11 @@ public class TpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        plugin.getTeleportManager().acceptRequest(player);
+        boolean success = plugin.getTeleportManager().acceptRequest(player);
+        if (success) {
+            plugin.getHintManager().sendTeleportMessageWithHint(player, "tpa-accepted-target", "teleport-animation");
+        }
+
         return true;
     }
 }

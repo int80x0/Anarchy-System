@@ -304,18 +304,17 @@ public class HomesGui {
                 if (location != null) {
                     player.closeInventory();
                     Location fromLocation = player.getLocation();
-                    String successMessage = colorize(plugin.getConfigManager().formatMessage("home-teleported", "home", String.valueOf(homeNumber)));
 
                     plugin.getTeleportAnimationManager().startTeleportAnimation(player, fromLocation, location, () -> {
                         player.teleport(location);
-                        player.sendMessage(successMessage);
+                        plugin.getHintManager().sendMessageWithHint(player, "home-teleported", "teleport-animation", "home", String.valueOf(homeNumber));
                     });
                 } else {
                     player.sendMessage(colorize(plugin.getConfigManager().getGuiMessage("world-not-found")));
                 }
             } else if (clickType.isRightClick()) {
                 if (plugin.getHomesManager().deleteHome(player, homeNumber)) {
-                    player.sendMessage(colorize(plugin.getConfigManager().formatMessage("home-deleted", "home", String.valueOf(homeNumber))));
+                    plugin.getHintManager().sendMessageWithHint(player, "home-deleted", "homes-gui", "home", String.valueOf(homeNumber));
                     updateContent();
                 }
             }

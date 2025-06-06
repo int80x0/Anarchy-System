@@ -146,8 +146,7 @@ public class TeleportManager {
             });
         }
 
-        requester.sendMessage(plugin.getConfigManager().getTeleportMessage("tpa-accepted").replace("&", "§").replace("%player%", target.getName()));
-        target.sendMessage(plugin.getConfigManager().getTeleportMessage("tpa-accepted-target").replace("&", "§").replace("%player%", requester.getName()));
+        plugin.getHintManager().sendTeleportMessageWithHint(requester, "tpa-accepted", "teleport-animation", "player", target.getName());
 
         return true;
     }

@@ -43,7 +43,11 @@ public class TpaCommand implements CommandExecutor {
             return true;
         }
 
-        plugin.getTeleportManager().sendTeleportRequest(player, target, TeleportRequest.TeleportType.TPA);
+        boolean success = plugin.getTeleportManager().sendTeleportRequest(player, target, TeleportRequest.TeleportType.TPA);
+        if (success) {
+            plugin.getHintManager().sendTeleportMessageWithHint(player, "tpa-sent", "tpa-commands", "player", target.getName());
+        }
+
         return true;
     }
 }

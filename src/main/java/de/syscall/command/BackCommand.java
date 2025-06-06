@@ -26,7 +26,11 @@ public class BackCommand implements CommandExecutor {
             return true;
         }
 
-        plugin.getTeleportManager().teleportBack(player);
+        boolean success = plugin.getTeleportManager().teleportBack(player);
+        if (success) {
+            plugin.getHintManager().sendTeleportMessageWithHint(player, "back-teleported", "death-locations");
+        }
+
         return true;
     }
 }
