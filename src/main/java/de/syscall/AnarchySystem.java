@@ -4,18 +4,20 @@ import de.syscall.command.*;
 import de.syscall.listener.PlayerListener;
 import de.syscall.listener.TeleportListener;
 import de.syscall.manager.*;
+import de.syscall.util.MigrationUtility;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AnarchySystem extends JavaPlugin {
 
     private static AnarchySystem instance;
     private ConfigManager configManager;
-    private HomesManager homesManager;
+    private HomesManagerCracked homesManager;
     private LuckPermsManager luckPermsManager;
-    private ParticleManager particleManager;
-    private TeleportManager teleportManager;
-    private TeleportAnimationManager teleportAnimationManager;
+    private ParticleManagerCracked particleManager;
+    private TeleportManagerCracked teleportManager;
+    private TeleportAnimationManagerCracked teleportAnimationManager;
     private HintManager hintManager;
+    private MigrationUtility migrationUtility;
 
     @Override
     public void onEnable() {
@@ -23,10 +25,23 @@ public class AnarchySystem extends JavaPlugin {
 
         this.configManager = new ConfigManager(this);
         this.luckPermsManager = new LuckPermsManager(this);
-        this.homesManager = new HomesManager(this);
-        this.particleManager = new ParticleManager(this);
-        this.teleportManager = new TeleportManager(this);
-        this.teleportAnimationManager = new TeleportAnimationManager(this);
+        this.migrationUtility = new MigrationUtility(this);
+
+        if (getConfig().getBoolean("migrate-from-uuid", false)) {
+            getLogger().info("Starting migration from UUID to player names...");
+            if (migrationUtility.migrateFromUuidToNames()) {
+                getLogger().info("Migration completed successfully!");
+                getConfig().set("migrate-from-uuid", false);
+                saveConfig();
+            } else {
+                getLogger().warning("Migration failed!");
+            }
+        }
+
+        this.homesManager = new HomesManagerCracked(this);
+        this.particleManager = new ParticleManagerCracked(this);
+        this.teleportManager = new TeleportManagerCracked(this);
+        this.teleportAnimationManager = new TeleportAnimationManagerCracked(this);
         this.hintManager = new HintManager(this);
 
         registerCommands();
@@ -126,7 +141,7 @@ public class AnarchySystem extends JavaPlugin {
         return configManager;
     }
 
-    public HomesManager getHomesManager() {
+    public HomesManagerCracked getHomesManager() {
         return homesManager;
     }
 
@@ -134,19 +149,23 @@ public class AnarchySystem extends JavaPlugin {
         return luckPermsManager;
     }
 
-    public ParticleManager getParticleManager() {
+    public ParticleManagerCracked getParticleManager() {
         return particleManager;
     }
 
-    public TeleportManager getTeleportManager() {
+    public TeleportManagerCracked getTeleportManager() {
         return teleportManager;
     }
 
-    public TeleportAnimationManager getTeleportAnimationManager() {
+    public TeleportAnimationManagerCracked getTeleportAnimationManager() {
         return teleportAnimationManager;
     }
 
     public HintManager getHintManager() {
         return hintManager;
+    }
+
+    public MigrationUtility getMigrationUtility() {
+        return migrationUtility;
     }
 }

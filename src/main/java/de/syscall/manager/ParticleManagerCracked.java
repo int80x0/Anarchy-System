@@ -2,22 +2,21 @@ package de.syscall.manager;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import de.syscall.AnarchySystem;
-import de.syscall.task.ParticleTask;
+import de.syscall.task.ParticleTaskCracked;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-public class ParticleManager {
+public class ParticleManagerCracked {
 
     private final AnarchySystem plugin;
-    private final Map<UUID, BukkitTask> activeTasks;
+    private final Map<String, BukkitTask> activeTasks;
     private boolean protocolLibAvailable;
 
-    public ParticleManager(AnarchySystem plugin) {
+    public ParticleManagerCracked(AnarchySystem plugin) {
         this.plugin = plugin;
         this.activeTasks = new HashMap<>();
         try {
@@ -38,13 +37,13 @@ public class ParticleManager {
 
         stopParticleTask(player);
 
-        ParticleTask task = new ParticleTask(plugin, player, this);
+        ParticleTaskCracked task = new ParticleTaskCracked(plugin, player, this);
         BukkitTask bukkitTask = task.runTaskTimerAsynchronously(plugin, 0L, 2L);
-        activeTasks.put(player.getUniqueId(), bukkitTask);
+        activeTasks.put(player.getName().toLowerCase(), bukkitTask);
     }
 
     public void stopParticleTask(Player player) {
-        BukkitTask task = activeTasks.remove(player.getUniqueId());
+        BukkitTask task = activeTasks.remove(player.getName().toLowerCase());
         if (task != null && !task.isCancelled()) {
             task.cancel();
         }
@@ -124,12 +123,12 @@ public class ParticleManager {
     }
 
     public void reload() {
-        Map<UUID, Player> playersToRestart = new HashMap<>();
+        Map<String, Player> playersToRestart = new HashMap<>();
 
-        for (UUID uuid : activeTasks.keySet()) {
-            Player player = plugin.getServer().getPlayer(uuid);
+        for (String playerName : activeTasks.keySet()) {
+            Player player = plugin.getServer().getPlayer(playerName);
             if (player != null && player.isOnline()) {
-                playersToRestart.put(uuid, player);
+                playersToRestart.put(playerName, player);
             }
         }
 

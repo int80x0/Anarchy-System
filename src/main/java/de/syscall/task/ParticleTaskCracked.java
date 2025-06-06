@@ -2,7 +2,7 @@ package de.syscall.task;
 
 import de.syscall.AnarchySystem;
 import de.syscall.data.HomeData;
-import de.syscall.manager.ParticleManager;
+import de.syscall.manager.ParticleManagerCracked;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,15 +10,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParticleTask extends BukkitRunnable {
+public class ParticleTaskCracked extends BukkitRunnable {
 
     private final AnarchySystem plugin;
     private final Player player;
-    private final ParticleManager particleManager;
+    private final ParticleManagerCracked particleManager;
     private final Map<Integer, Double> homeRotationAngles;
     private final double rotationSpeed;
 
-    public ParticleTask(AnarchySystem plugin, Player player, ParticleManager particleManager) {
+    public ParticleTaskCracked(AnarchySystem plugin, Player player, ParticleManagerCracked particleManager) {
         this.plugin = plugin;
         this.player = player;
         this.particleManager = particleManager;

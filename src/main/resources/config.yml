@@ -4,6 +4,19 @@
 # Modern homes system with GUI management
 # UTF-8 Support enabled
 
+# Migration Settings
+migrate-from-uuid: false  # Set to true to migrate from UUID-based storage to name-based storage
+
+# Cracked Server Settings
+cracked-mode:
+  enabled: true
+  # Store data by player names instead of UUIDs
+  use-player-names: true
+  
+  # Warning: On cracked servers, players can change names
+  # This may cause data loss if players use different names
+  case-sensitive-names: false
+
 # Module Configuration
 modules:
   homes:

@@ -2,7 +2,6 @@ package de.syscall.command;
 
 import de.syscall.AnarchySystem;
 import de.syscall.gui.HomesGui;
-import de.syscall.util.ChatUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
