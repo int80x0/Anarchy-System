@@ -73,6 +73,26 @@ public class ConfigManager {
         return config.getString("homes.gui.homes." + home + ".rank", "default");
     }
 
+    public String getConfirmationGuiTitle() {
+        return config.getString("homes.confirmation-gui.title", "&cDelete Home %home%?");
+    }
+
+    public List<String> getConfirmationGuiLayout() {
+        return config.getStringList("homes.confirmation-gui.layout");
+    }
+
+    public String getConfirmationGuiItemMaterial(String symbol) {
+        return config.getString("homes.confirmation-gui.items." + symbol + ".material", "GRAY_STAINED_GLASS_PANE");
+    }
+
+    public String getConfirmationGuiItemName(String symbol) {
+        return config.getString("homes.confirmation-gui.items." + symbol + ".name", " ");
+    }
+
+    public List<String> getConfirmationGuiItemLore(String symbol) {
+        return config.getStringList("homes.confirmation-gui.items." + symbol + ".lore");
+    }
+
     public String getMessage(String key) {
         return config.getString("messages.commands." + key, "Message not found: " + key);
     }

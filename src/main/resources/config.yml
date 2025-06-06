@@ -270,6 +270,37 @@ homes:
         name: "&dHome 10 &8- Legendary"
         rank: "legendary"
 
+  # Confirmation GUI Configuration
+  confirmation-gui:
+    title: "&c&lDelete Home %home%?"
+    
+    # Layout Design (hopper inventory - 5 slots)
+    # Symbols: # = border, Y = confirm, N = cancel
+    layout:
+      - "#YYN#"
+    
+    # Interface Elements
+    items:
+      "#":
+        material: "BLACK_STAINED_GLASS_PANE"
+        name: " "
+      "Y":
+        material: "GREEN_CONCRETE"
+        name: "&a&lCONFIRM DELETE"
+        lore:
+          - "&7This will permanently delete"
+          - "&7your home &f%home%&7!"
+          - ""
+          - "&a&lClick to confirm deletion"
+      "N":
+        material: "RED_CONCRETE"
+        name: "&c&lCANCEL"
+        lore:
+          - "&7Keep your home and"
+          - "&7return to the homes menu"
+          - ""
+          - "&c&lClick to cancel"
+
 # Message Configuration
 messages:
   # Command Messages

@@ -47,7 +47,7 @@ public class HomesGui {
 
         this.window = Window.single()
                 .setViewer(player)
-                .setTitle(colorize(plugin.getConfigManager().getGuiTitle()))
+                .setTitle(plugin.getConfigManager().getGuiTitle())
                 .setGui(gui)
                 .build();
 
@@ -313,10 +313,8 @@ public class HomesGui {
                     player.sendMessage(colorize(plugin.getConfigManager().getGuiMessage("world-not-found")));
                 }
             } else if (clickType.isRightClick()) {
-                if (plugin.getHomesManager().deleteHome(player, homeNumber)) {
-                    plugin.getHintManager().sendMessageWithHint(player, "home-deleted", "homes-gui", "home", String.valueOf(homeNumber));
-                    updateContent();
-                }
+                player.closeInventory();
+                new ConfirmationGui(plugin, player, homeNumber, HomesGui.this).open();
             }
         }
     }
