@@ -8,7 +8,7 @@
 modules:
   homes:
     enabled: true
-  packet-particles:
+  home-particles:
     enabled: true
   teleport:
     enabled: true
@@ -94,7 +94,7 @@ teleport-animation:
     pitch: 1.0
 
 # Packet Particles Configuration
-packet-particles:
+home-particles:
   # Distance in blocks when particles become visible to player
   detection-radius: 40.0
   
