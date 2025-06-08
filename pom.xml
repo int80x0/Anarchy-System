@@ -73,6 +73,12 @@
             <artifactId>npc-lib-bukkit</artifactId>
             <version>3.0.0-beta12</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
