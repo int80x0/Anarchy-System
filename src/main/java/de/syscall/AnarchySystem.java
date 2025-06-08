@@ -129,7 +129,7 @@ public class AnarchySystem extends JavaPlugin {
             homesManager.reload();
         }
 
-        if (particleManager != null && configManager.isModuleEnabled("packet-particles")) {
+        if (particleManager != null && configManager.isModuleEnabled("home-particles")) {
             for (org.bukkit.entity.Player player : getServer().getOnlinePlayers()) {
                 particleManager.startParticleTask(player);
             }

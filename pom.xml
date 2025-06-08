@@ -68,12 +68,11 @@
             <version>5.3.0</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Mojang AuthLib für GameProfile -->
         <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>authlib</artifactId>
-            <version>6.0.54</version>
-            <scope>provided</scope>
+            <groupId>io.github.juliarn</groupId>
+            <artifactId>npc-lib-bukkit</artifactId>
+            <version>3.0.0-beta12</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -106,7 +105,11 @@
                                 </relocation>
                                 <relocation>
                                     <pattern>com.google.gson</pattern>
-                                    <shadedPattern>de.anarchy.libs.gson</shadedPattern>
+                                    <shadedPattern>de.syscall.libs.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.github.juliarn.npclib</pattern>
+                                    <shadedPattern>de.syscall.libs.npclib</shadedPattern>
                                 </relocation>
                             </relocations>
                             <filters>
