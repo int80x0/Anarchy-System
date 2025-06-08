@@ -81,12 +81,5 @@ public class DeathListener implements Listener {
                 return;
             }
         }
-
-        for (de.syscall.data.DeathCorpse corpse : plugin.getDeathManager().getActiveCorpses().values()) {
-            if (corpse.getArmorStand().equals(armorStand)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
     }
 }

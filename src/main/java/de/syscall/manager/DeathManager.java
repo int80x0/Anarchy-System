@@ -62,19 +62,23 @@ public class DeathManager {
         DeathData deathData = new DeathData(player.getName(), deathLocation, items, experience);
 
         if (plugin.getConfigManager().isCorpseEnabled()) {
-            spawnCorpse(player, deathLocation, deathData);
+            spawnRealisticCorpse(player, deathLocation, deathData);
         } else {
             spawnLootHead(deathData);
         }
     }
 
-    private void spawnCorpse(Player player, Location location, DeathData deathData) {
+    private void spawnRealisticCorpse(Player player, Location location, DeathData deathData) {
         String playerName = player.getName().toLowerCase();
 
         cleanupPlayerCorpse(playerName);
 
-        ArmorStand corpse = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
-        corpse.setVisible(false);
+        Location corpseLocation = location.getBlock().getLocation().add(0.5, -0.3, 0.5);
+        corpseLocation.setYaw(location.getYaw());
+        corpseLocation.setPitch(0);
+
+        ArmorStand corpse = (ArmorStand) location.getWorld().spawnEntity(corpseLocation, EntityType.ARMOR_STAND);
+        corpse.setVisible(true);
         corpse.setGravity(false);
         corpse.setCanPickupItems(false);
         corpse.setMarker(false);
@@ -82,11 +86,12 @@ public class DeathManager {
         corpse.setBasePlate(false);
         corpse.setArms(true);
         corpse.setCustomNameVisible(false);
+        corpse.setInvulnerable(true);
 
-        setupCorpsePose(corpse);
-        applySkinToCorpse(corpse, player);
+        setupRealisticLyingPose(corpse);
+        applyRealisticBodyToCorpse(corpse, player);
 
-        DeathCorpse deathCorpse = new DeathCorpse(player.getName(), corpse, location);
+        DeathCorpse deathCorpse = new DeathCorpse(player.getName(), corpse, corpseLocation);
         activeCorpses.put(playerName, deathCorpse);
 
         CorpseSinkTask sinkTask = new CorpseSinkTask(plugin, deathCorpse, deathData);
@@ -121,6 +126,7 @@ public class DeathManager {
         headStand.setSmall(true);
         headStand.setBasePlate(false);
         headStand.setArms(false);
+        headStand.setInvulnerable(true);
 
         String displayText = plugin.getConfigManager().getDeathLootText()
                 .replace("%player%", deathData.getPlayerName());
@@ -194,21 +200,49 @@ public class DeathManager {
         }
     }
 
-    private void setupCorpsePose(ArmorStand corpse) {
-        corpse.setHeadPose(new EulerAngle(Math.toRadians(90), 0, 0));
-        corpse.setBodyPose(new EulerAngle(Math.toRadians(90), 0, 0));
-        corpse.setLeftArmPose(new EulerAngle(Math.toRadians(90), 0, 0));
-        corpse.setRightArmPose(new EulerAngle(Math.toRadians(90), 0, 0));
-        corpse.setLeftLegPose(new EulerAngle(Math.toRadians(90), 0, 0));
-        corpse.setRightLegPose(new EulerAngle(Math.toRadians(90), 0, 0));
+    private void setupRealisticLyingPose(ArmorStand corpse) {
+        corpse.setHeadPose(new EulerAngle(Math.toRadians(-85), Math.toRadians(5), Math.toRadians(-2)));
+        corpse.setBodyPose(new EulerAngle(Math.toRadians(-90), 0, 0));
+        corpse.setLeftArmPose(new EulerAngle(Math.toRadians(-85), Math.toRadians(-20), Math.toRadians(-15)));
+        corpse.setRightArmPose(new EulerAngle(Math.toRadians(-95), Math.toRadians(20), Math.toRadians(15)));
+        corpse.setLeftLegPose(new EulerAngle(Math.toRadians(-88), Math.toRadians(-8), Math.toRadians(-3)));
+        corpse.setRightLegPose(new EulerAngle(Math.toRadians(-92), Math.toRadians(8), Math.toRadians(3)));
     }
 
-    private void applySkinToCorpse(ArmorStand corpse, Player player) {
+    private void applyRealisticBodyToCorpse(ArmorStand corpse, Player player) {
         try {
             ItemStack playerHead = SkinUtils.getPlayerHead(player.getName());
             corpse.getEquipment().setHelmet(playerHead);
+
+            if (player.getInventory().getChestplate() != null) {
+                corpse.getEquipment().setChestplate(player.getInventory().getChestplate().clone());
+            } else {
+                ItemStack defaultChestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+                corpse.getEquipment().setChestplate(defaultChestplate);
+            }
+
+            if (player.getInventory().getLeggings() != null) {
+                corpse.getEquipment().setLeggings(player.getInventory().getLeggings().clone());
+            } else {
+                ItemStack defaultLeggings = new ItemStack(Material.LEATHER_LEGGINGS);
+                corpse.getEquipment().setLeggings(defaultLeggings);
+            }
+
+            if (player.getInventory().getBoots() != null) {
+                corpse.getEquipment().setBoots(player.getInventory().getBoots().clone());
+            } else {
+                ItemStack defaultBoots = new ItemStack(Material.LEATHER_BOOTS);
+                corpse.getEquipment().setBoots(defaultBoots);
+            }
+
+            if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+                corpse.getEquipment().setItemInMainHand(player.getInventory().getItemInMainHand().clone());
+            }
+            if (player.getInventory().getItemInOffHand().getType() != Material.AIR) {
+                corpse.getEquipment().setItemInOffHand(player.getInventory().getItemInOffHand().clone());
+            }
         } catch (Exception e) {
-            plugin.getLogger().warning("Failed to apply skin to corpse for player: " + player.getName());
+            plugin.getLogger().warning("Failed to apply realistic body to corpse for player: " + player.getName());
         }
     }
 
